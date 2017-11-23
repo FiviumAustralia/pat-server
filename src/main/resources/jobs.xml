@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<job-scheduling-data
+	xmlns="http://www.quartz-scheduler.org/xml/JobSchedulingData"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.quartz-scheduler.org/xml/JobSchedulingData
+        http://www.quartz-scheduler.org/xml/job_scheduling_data_1_8.xsd"
+	version="1.8">
+
+	<pre-processing-commands>
+		<delete-jobs-in-group>PROCESS_LEAD_JOB_GROUP</delete-jobs-in-group>
+		<delete-triggers-in-group>PROCESS_LEAD_TRIGGER_GROUP</delete-triggers-in-group>
+	</pre-processing-commands>
+
+	<schedule>
+		<job>
+			<name>PollProviders</name>
+			<group>RNS</group>
+			<description>This is Job A</description>
+			<job-class>fivium.rns.utils.ProviderPolling</job-class>
+		</job>
+
+		<trigger>
+			<cron>
+				<name>RNSDataPoller</name>
+				<job-name>PollProviders</job-name>
+				<job-group>RNS</job-group>
+				<!-- It will run every 30 seconds -->
+				<!-- <cron-expression>0/30 * * * * ?</cron-expression> -->
+				<cron-expression>0 0 0/1 * * ?</cron-expression>
+				<!-- This will cause it to run every 10 minutes -->
+				<!-- <cron-expression>0 0/10 * 1/1 * ?</cron-expression> -->
+			</cron>
+		</trigger>
+	</schedule>
+</job-scheduling-data>

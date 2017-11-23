@@ -1,0 +1,19 @@
+language: java
+jdk: oraclejdk8
+services:
+    - mysql
+addons:
+  apt:
+    packages:
+    - mysql-server-5.6
+    - mysql-client-core-5.6
+    - mysql-client-5.6
+deploy:
+  provider: releases
+  skip_cleanup: true
+  api_key:
+    secure: aqXbgas5l1oLgHFTF5kK4zz/HGsixCi9GjJuX0BJhIGvYa/utowPXFzsyCFv5j7U5uc5XBbLEj3R81QL7ksVjZg3DoOeJo2nb8pP6EYCcaPucSR02fG3JVeEzvTYCxlNHAne1wf46+Bx9lZmGtVSE9Mvwx4qFnisKGJ4H0eZ3uOsQBEGsALbmm7tnQjMk1SEU+H1eHojOUhx49RIP2bmdj1mIquoF7kVVVXJ7FMQwASwuVc6RdnRWAsraKI/hgE5zx+ok6EE0eOk4updV+IUZDhfkrxpVrHIrHqlNceAjTkn1WsYhOQzay1L2A885mEXUgIlKBOjVZEe+BN5W0CezXHaOr5PhiVvYY4fS0RggZzJpKSVBMv537RZipM9cegVRZnh/J9kAsys8AFeLTX8ebD0y9aOOoifv+akWjdz0pVTdTCPVgHDYotboh8KLGTDo6ewke790IOBWAi47EferoTvInMadwQSS13sf8OKCnxHNvufcc/lmHm+VtHEhA/iWNqhpVD6ybNsrcBONS/26ogVVlzWy/r7Kvkdws7QWUL46jSudZPmiFe5HWCv6R3AOOtXvuqpVhsukruXxYmvWdO0j7SPjUM/1CwowFNHxqOELeJa2X//VmdQpNXynwACMO9MFyh8ltszK7bAXrjsjr4Jk5EnT90Ds8PkMeU0kzE=
+  file: "./target/rns-java-backend-war.war"
+  on:
+    repo: FiviumAustralia/rns-java-backend
+    branch: development

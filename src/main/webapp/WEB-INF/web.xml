@@ -1,0 +1,81 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+	<display-name>Archetype Created Web Application</display-name>
+	<filter>
+		<filter-name>CORS_Filter</filter-name>
+		<display-name>CORS_Filter</display-name>
+		<description></description>
+		<filter-class>fivium.rns.servlets.CORS_Filter</filter-class>
+	</filter>
+	<filter>
+		<filter-name>Security_Filter</filter-name>
+		<display-name>Security_Filter</display-name>
+		<description></description>
+		<filter-class>fivium.rns.servlets.SecurityFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>CORS_Filter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>Security_Filter</filter-name>
+		<url-pattern>/RNS_Backend</url-pattern>
+	</filter-mapping>
+	<servlet>
+		<servlet-name>RNS_Backend</servlet-name>
+		<display-name>RNS_Backend</display-name>
+		<description></description>
+		<servlet-class>fivium.rns.servlets.RNS_Backend</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>Login_Servlet</servlet-name>
+		<display-name>Login_Servlet</display-name>
+		<description></description>
+		<servlet-class>fivium.rns.servlets.LoginServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>Internal_Actions_Servlet</servlet-name>
+		<display-name>Internal_Actions_Servlet</display-name>
+		<description></description>
+		<servlet-class>fivium.rns.servlets.InternalServerServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Internal_Actions_Servlet</servlet-name>
+		<url-pattern>/internalServerActions</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>RNS_Backend</servlet-name>
+		<url-pattern>/RNS_Backend</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>Login_Servlet</servlet-name>
+		<url-pattern>/Login</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>QuartzInitializer</servlet-name>
+		<servlet-class>org.quartz.ee.servlet.QuartzInitializerServlet</servlet-class>
+		<init-param>
+			<param-name>config-file</param-name>
+			<param-value>./quartz.properties</param-value>
+		</init-param>
+		<init-param>
+			<param-name>shutdown-on-unload</param-name>
+			<param-value>true</param-value>
+		</init-param>
+		<load-on-startup>2</load-on-startup>
+	</servlet>
+	<!-- <security-constraint>
+		<web-resource-collection>
+			<web-resource-name>QueuingServer</web-resource-name>
+			<url-pattern>/*</url-pattern>
+		</web-resource-collection>
+		<user-data-constraint>
+			<transport-guarantee>CONFIDENTIAL</transport-guarantee>
+		</user-data-constraint>
+	</security-constraint>
+	 -->
+
+</web-app>
