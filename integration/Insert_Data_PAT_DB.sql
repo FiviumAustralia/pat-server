@@ -12,11 +12,11 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
 
--- Dumping database structure for rns
-CREATE DATABASE IF NOT EXISTS `rns` /*!40100 DEFAULT CHARACTER SET latin1 */;
-USE `rns`;
+-- Dumping database structure for pat
+CREATE DATABASE IF NOT EXISTS `pat` /*!40100 DEFAULT CHARACTER SET latin1 */;
+USE `pat`;
 
--- Dumping structure for table rns.company
+-- Dumping structure for table pat.company
 CREATE TABLE IF NOT EXISTS `company` (
   `Company_Name` varchar(50) NOT NULL,
   `Terms_and_Conditions` varchar(5000) NOT NULL,
@@ -25,14 +25,14 @@ CREATE TABLE IF NOT EXISTS `company` (
   PRIMARY KEY (`Company_Name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table rns.company: ~2 rows (approximately)
+-- Dumping data for table pat.company: ~2 rows (approximately)
 /*!40000 ALTER TABLE `company` DISABLE KEYS */;
 INSERT INTO `company` (`Company_Name`, `Terms_and_Conditions`, `Permissions`, `Category`) VALUES
 	('ABC', 'General Site Usage\r\n\r\nLast Revised: December 16, 2013\r\n\r\nWelcome to www.lorem-ipsum.info. This site is provided as a service to our visitors and may be used for informational purposes only. Because the Terms and Conditions contain legal obligations, please read them carefully.\r\n\r\n1. YOUR AGREEMENT\r\n\r\nBy using this Site, you agree to be bound by, and to comply with, these Terms and Conditions. If you do not agree to these Terms and Conditions, please do not use this site.\r\n\r\nPLEASE NOTE: We reserve the right, at our sole discretion, to change, modify or otherwise alter these Terms and Conditions at any time. Unless otherwise indicated, amendments will become effective immediately. Please review these Terms and Conditions periodically. Your continued use of the Site following the posting of changes and/or modifications will constitute your acceptance of the revised Terms and Conditions and the reasonableness of these standards for notice of changes. For your information, this page was last updated as of the date at the top of these terms and conditions.\r\n2. PRIVACY\r\n\r\nPlease review our Privacy Policy, which also governs your visit to this Site, to understand our practices.\r\n\r\n3. LINKED SITES\r\n\r\nThis Site may contain links to other independent third-party Web sites ("Linked Sites”). These Linked Sites are provided solely as a convenience to our visitors. Such Linked Sites are not under our control, and we are not responsible for and does not endorse the content of such Linked Sites, including any information or materials contained on such Linked Sites. You will need to make your own independent judgment regarding your interaction with these Linked Sites.\r\n\r\n4. FORWARD LOOKING STATEMENTS\r\n\r\nAll materials reproduced on this site speak as of the original date of publication or filing. The fact that a document is available on this site does not mean that the information contained in such document has not been modified or superseded by events or by a subsequent document or filing. We have no duty or policy to update any information or statements contained on this site and, therefore, such information or statements should not be relied upon as being current as of the date you access this site.\r\n\r\n5. DISCLAIMER OF WARRANTIES AND LIMITATION OF LIABILITY\r\n\r\nA. THIS SITE MAY CONTAIN INACCURACIES AND TYPOGRAPHICAL ERRORS. WE DOES NOT WARRANT THE ACCURACY OR COMPLETENESS OF THE MATERIALS OR THE RELIABILITY OF ANY ADVICE, OPINION, STATEMENT OR OTHER INFORMATION DISPLAYED OR DISTRIBUTED THROUGH THE SITE. YOU EXPRESSLY UNDERSTAND AND AGREE THAT: (i) YOUR USE OF THE SITE, INCLUDING ANY RELIANCE ON ANY SUCH OPINION, ADVICE, STATEMENT, MEMORANDUM, OR INFORMATION CONTAINED HEREIN, SHALL BE AT YOUR SOLE RISK; (ii) THE SITE IS PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS; (iii) EXCEPT AS EXPRESSLY PROVIDED HEREIN WE DISCLAIM ALL WARRANTIES OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, WORKMANLIKE EFFORT, TITLE AND NON-INFRINGEMENT; (iv) WE MAKE NO WARRANTY WITH RESPECT TO THE RESULTS THAT MAY BE OBTAINED FROM THIS SITE, THE PRODUCTS OR SERVICES ADVERTISED OR OFFERED OR MERCHANTS INVOLVED; (v) ANY MATERIAL DOWNLOADED OR OTHERWISE OBTAINED THROUGH THE USE OF THE SITE IS DONE AT YOUR OWN DISCRETION AND RISK; and (vi) YOU WILL BE SOLELY RESPONSIBLE FOR ANY DAMAGE TO YOUR COMPUTER SYSTEM OR FOR ANY LOSS OF DATA THAT RESULTS FROM THE DOWNLOAD OF ANY SUCH MATERIAL.\r\n\r\nB. YOU UNDERSTAND AND AGREE THAT UNDER NO CIRCUMSTANCES, INCLUDING, BUT NOT LIMITED TO, NEGLIGENCE, SHALL WE BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, PUNITIVE OR CONSEQUENTIAL DAMAGES THAT RESULT FROM THE USE OF, OR THE INABILITY TO USE, ANY OF OUR SITES OR MATERIALS OR FUNCTIONS ON ANY SUCH SITE, EVEN IF WE HAVE BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. THE FOREGOING LIMITATIONS SHALL APPLY NOTWITHSTANDING ANY FAILURE OF ESSENTIAL PURPOSE OF ANY LIMITED REMEDY.\r\n\r\n6. EXCLUSIONS AND LIMITATIONS\r\n\r\nSOME JURISDICTIONS DO NOT ALLOW THE EXCLUSION OF CERTAIN WARRANTIES OR THE LIMITATION OR EXCLUSION OF LIABILITY FOR INCIDENTAL OR CONSEQUENTIAL DAMAGES. ACCORDINGLY, OUR LIABILITY IN SUCH JURISDICTION SHALL BE LIMITED TO THE MAXIMUM EXTENT PERMITTED BY LAW.\r\n\r\n7. OUR PROPRIETARY RIGHTS\r\n\r\nThis Site and all its Contents are intended solely for personal, non-commercial use. Except as expressly provided, nothing within the Site shall be construed as conferring any license under our or any third party\'s intellectual property rights, whether by estoppel, implication, waiver, or otherwise. Without limiting the generality of the foregoing, you acknowledge and agree that all content available through and used to operate the Site and its services is protected by copyright, trademark, patent, or other proprietary rights. You agree not to: (a) modify, alter, or deface any of the trademarks, service marks, trade dress (collectively "Trademarks") o', 'sleep activity profile settings location', 'C'),
 	('XYZ', 'fyufyf', 'sleep', 'C');
 /*!40000 ALTER TABLE `company` ENABLE KEYS */;
 
--- Dumping structure for table rns.fitness_data
+-- Dumping structure for table pat.fitness_data
 CREATE TABLE IF NOT EXISTS `fitness_data` (
   `p_id` varchar(50) DEFAULT NULL,
   `data` varchar(50000) DEFAULT 'NULL',
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `fitness_data` (
   CONSTRAINT `fitness_data_patient_p_id_fk` FOREIGN KEY (`p_id`) REFERENCES `patient` (`p_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table rns.fitness_data: ~15 rows (approximately)
+-- Dumping data for table pat.fitness_data: ~15 rows (approximately)
 /*!40000 ALTER TABLE `fitness_data` DISABLE KEYS */;
 INSERT INTO `fitness_data` (`p_id`, `data`, `date`, `last_sync_date`) VALUES
 	('1', '{"pId":"1","activityDate":"2017-10-31","dailyStepData":{"dateTime":"2017-10-31","value":3569},"deviceData":[{"battery":"High","deviceVersion":"Charge 2","id":"426929266","lastSyncTime":"2017-10-31T16:55:52.000","mac":"48CF5193B9CF","type":"TRACKER","features":[]}],"lastSyncDate":"2017-10-31"}', '2017-10-31', '2017-10-31'),
@@ -62,20 +62,20 @@ INSERT INTO `fitness_data` (`p_id`, `data`, `date`, `last_sync_date`) VALUES
 	('37', '{"pId":"37","activityDate":"2017-11-09","dailyStepData":{"dateTime":"2017-11-09","value":1447},"deviceData":[{"battery":"Medium","deviceVersion":"Charge 2","id":"492186654","lastSyncTime":"2017-11-09T08:39:58.000","mac":"20471254F2F6","type":"TRACKER","features":[]}],"lastSyncDate":"2017-11-09"}', '2017-11-09', '2017-11-08');
 /*!40000 ALTER TABLE `fitness_data` ENABLE KEYS */;
 
--- Dumping structure for table rns.internaluser
+-- Dumping structure for table pat.internaluser
 CREATE TABLE IF NOT EXISTS `internaluser` (
   `User` varchar(50) DEFAULT NULL,
   `Password` varchar(100) DEFAULT NULL,
   `Salt` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table rns.internaluser: ~1 rows (approximately)
+-- Dumping data for table pat.internaluser: ~1 rows (approximately)
 /*!40000 ALTER TABLE `internaluser` DISABLE KEYS */;
 INSERT INTO `internaluser` (`User`, `Password`, `Salt`) VALUES
 	('superuser', '[¡ÍçÎ#Ä¯îIÉ.§Vë¹h²úÿõ·+·Ö×Åkj', 'T½PÅ?A7ýõ?Æ<ýë');
 /*!40000 ALTER TABLE `internaluser` ENABLE KEYS */;
 
--- Dumping structure for table rns.notifications
+-- Dumping structure for table pat.notifications
 CREATE TABLE IF NOT EXISTS `notifications` (
   `p_id` varchar(50) NOT NULL,
   `notification_date` date NOT NULL,
@@ -85,14 +85,14 @@ CREATE TABLE IF NOT EXISTS `notifications` (
   CONSTRAINT `notifications_patient_p_id_fk` FOREIGN KEY (`p_id`) REFERENCES `patient` (`p_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table rns.notifications: ~2 rows (approximately)
+-- Dumping data for table pat.notifications: ~2 rows (approximately)
 /*!40000 ALTER TABLE `notifications` DISABLE KEYS */;
 INSERT INTO `notifications` (`p_id`, `notification_date`, `notification_text`, `delivery_status`) VALUES
 	('1', '2017-11-06', 'Please charge your Fitbit', 'false'),
 	('1', '2017-11-09', 'Please sync with Fitbit', 'false');
 /*!40000 ALTER TABLE `notifications` ENABLE KEYS */;
 
--- Dumping structure for table rns.patient
+-- Dumping structure for table pat.patient
 CREATE TABLE IF NOT EXISTS `patient` (
   `p_id` varchar(50) NOT NULL,
   `Token` varchar(500) NOT NULL,
@@ -106,7 +106,7 @@ CREATE TABLE IF NOT EXISTS `patient` (
   PRIMARY KEY (`p_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table rns.patient: ~53 rows (approximately)
+-- Dumping data for table pat.patient: ~53 rows (approximately)
 /*!40000 ALTER TABLE `patient` DISABLE KEYS */;
 INSERT INTO `patient` (`p_id`, `Token`, `provider_user_id`, `provider_refresh_token`, `provider_permissions`, `provider`, `Active`, `Company`, `firebase_device_token`) VALUES
 	('1', 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIn0.OzqiHsm7N5zI-WATQHKSqn9Tx2bWdcbINaf0oTtXzKbii2jeg6pB_F6FHLjm-EJT_MxFzDgPxXRfHHcfs5IctQ', '5ND9BK', 'af418020a722ad2dffcef8623722593e5df4b712469c6870afe2b95ed69adf0f', 'sleep location settings activity profile', 'fitbit', 'Active', 'ABC', 'doeSqNkyfLg:APA91bFgC7D460D8JYNiI3nzm_yvQ80bOm2R8fItdIdmiIBGJKHoHGIEjlp1HVOSQ0VfPvPgu9Ydjy6h7C6vvoVIC85sOoNjR7ovo5P0dAgdlqJwarQjj-mf4gTio2Gbyn5wRRFHciOn'),
@@ -164,7 +164,7 @@ INSERT INTO `patient` (`p_id`, `Token`, `provider_user_id`, `provider_refresh_to
 	('9', '', '', '', '', '', 'Not Active', 'ABC', NULL);
 /*!40000 ALTER TABLE `patient` ENABLE KEYS */;
 
--- Dumping structure for table rns.rss_feeds
+-- Dumping structure for table pat.rss_feeds
 CREATE TABLE IF NOT EXISTS `rss_feeds` (
   `feed_id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(200) NOT NULL,
@@ -173,7 +173,7 @@ CREATE TABLE IF NOT EXISTS `rss_feeds` (
   PRIMARY KEY (`feed_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
 
--- Dumping data for table rns.rss_feeds: ~9 rows (approximately)
+-- Dumping data for table pat.rss_feeds: ~9 rows (approximately)
 /*!40000 ALTER TABLE `rss_feeds` DISABLE KEYS */;
 INSERT INTO `rss_feeds` (`feed_id`, `title`, `url`, `color`) VALUES
 	(1, 'Healthline', 'https://www.healthline.com/rss/health-news', '#05a2d3'),
@@ -187,7 +187,7 @@ INSERT INTO `rss_feeds` (`feed_id`, `title`, `url`, `color`) VALUES
 	(16, 'arpit.arora@fivium.com.au', 'gmail test', 'NK is here');
 /*!40000 ALTER TABLE `rss_feeds` ENABLE KEYS */;
 
--- Dumping data for table rns_internal.clinicians: ~2 rows (approximately)
+-- Dumping data for table pat_internal.clinicians: ~2 rows (approximately)
 /*!40000 ALTER TABLE `clinicians` DISABLE KEYS */;
 INSERT INTO `clinicians` (`Email`, `Password`, `Firstname`, `Lastname`, `Token`, `Role`) VALUES
   ('clayton.blake@fivium.com.au', '$2a$10$25s97I7dNEop5MKlbuayDuyBXkOSGXErxZSSxSkbgKV9oYvOq03fa', 'Bat', 'Man', 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjbGF5dG9uLmJsYWtlQGZpdml1bS5jb20uYXUifQ.K7skx6mGBjhbVd_l6ttE-LxDmte4ZqUldME2QpygghMzND_hKNK1hlm6wclfLXGG87GdkUxws4X9w0TpqTDWdA', 'superuser'),
