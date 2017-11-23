@@ -187,6 +187,13 @@ INSERT INTO `rss_feeds` (`feed_id`, `title`, `url`, `color`) VALUES
 	(16, 'arpit.arora@fivium.com.au', 'gmail test', 'NK is here');
 /*!40000 ALTER TABLE `rss_feeds` ENABLE KEYS */;
 
+-- Dumping data for table rns_internal.clinicians: ~2 rows (approximately)
+/*!40000 ALTER TABLE `clinicians` DISABLE KEYS */;
+INSERT INTO `clinicians` (`Email`, `Password`, `Firstname`, `Lastname`, `Token`, `Role`) VALUES
+  ('clayton.blake@fivium.com.au', '$2a$10$25s97I7dNEop5MKlbuayDuyBXkOSGXErxZSSxSkbgKV9oYvOq03fa', 'Bat', 'Man', 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjbGF5dG9uLmJsYWtlQGZpdml1bS5jb20uYXUifQ.K7skx6mGBjhbVd_l6ttE-LxDmte4ZqUldME2QpygghMzND_hKNK1hlm6wclfLXGG87GdkUxws4X9w0TpqTDWdA', 'superuser'),
+  ('sampleuser@email.com ', '$2a$10$EdZN6K6Gd8fSpYMVL/yGB.lXUgZ1XDDlDscwQ85GvPwOIaSmplwmq', 'FirstName', 'LastName', '0', 'superuser');
+/*!40000 ALTER TABLE `clinicians` ENABLE KEYS */;
+
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
