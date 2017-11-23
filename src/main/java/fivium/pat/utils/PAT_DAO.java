@@ -26,7 +26,7 @@ public class PAT_DAO {
 			Class.forName("org.mariadb.jdbc.Driver");
 			// 2147483 seconds ~ 24 days (maximum for mysql run on windows)
 			connection = DriverManager.getConnection(
-					"jdbc:mariadb://localhost:3306/rns?user=root&password=root&sessionVariables=wait_timeout=2147483");
+					"jdbc:mariadb://localhost:3306/pat?user=root&password=root&sessionVariables=wait_timeout=2147483");
 		}
 		return connection;
 	}

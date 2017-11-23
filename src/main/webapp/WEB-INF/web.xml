@@ -8,13 +8,13 @@
 		<filter-name>CORS_Filter</filter-name>
 		<display-name>CORS_Filter</display-name>
 		<description></description>
-		<filter-class>fivium.rns.servlets.CORS_Filter</filter-class>
+		<filter-class>fivium.pat.servlets.CORS_Filter</filter-class>
 	</filter>
 	<filter>
 		<filter-name>Security_Filter</filter-name>
 		<display-name>Security_Filter</display-name>
 		<description></description>
-		<filter-class>fivium.rns.servlets.SecurityFilter</filter-class>
+		<filter-class>fivium.pat.servlets.SecurityFilter</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>CORS_Filter</filter-name>
@@ -28,19 +28,19 @@
 		<servlet-name>RNS_Backend</servlet-name>
 		<display-name>RNS_Backend</display-name>
 		<description></description>
-		<servlet-class>fivium.rns.servlets.RNS_Backend</servlet-class>
+		<servlet-class>fivium.pat.servlets.RNS_Backend</servlet-class>
 	</servlet>
 	<servlet>
 		<servlet-name>Login_Servlet</servlet-name>
 		<display-name>Login_Servlet</display-name>
 		<description></description>
-		<servlet-class>fivium.rns.servlets.LoginServlet</servlet-class>
+		<servlet-class>fivium.pat.servlets.LoginServlet</servlet-class>
 	</servlet>
 	<servlet>
 		<servlet-name>Internal_Actions_Servlet</servlet-name>
 		<display-name>Internal_Actions_Servlet</display-name>
 		<description></description>
-		<servlet-class>fivium.rns.servlets.InternalServerServlet</servlet-class>
+		<servlet-class>fivium.pat.servlets.InternalServerServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>Internal_Actions_Servlet</servlet-name>
