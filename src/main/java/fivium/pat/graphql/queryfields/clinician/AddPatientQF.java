@@ -33,8 +33,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 public class AddPatientQF extends PAT_BaseQF {
 
-	private static final String ADD_PATIENT_DETAILS_PREPARED_SQL_QUERY = "INSERT INTO rns.patient_details (p_id, first_name, last_name, mrn, dob, contact, email, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
-	private static final String ADD_PATIENT_PREPARED_SQL_QUERY = "INSERT INTO rns.patient (p_id, Token, provider_user_id, provider_refresh_token, provider_permissions, provider, Active, company, firebase_device_token) VALUES (?,?,?,?,?,?,?,?,?) ";
+	private static final String ADD_PATIENT_DETAILS_PREPARED_SQL_QUERY = "INSERT INTO pat.patient_details (p_id, first_name, last_name, mrn, dob, contact, email, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+	private static final String ADD_PATIENT_PREPARED_SQL_QUERY = "INSERT INTO pat.patient (p_id, Token, provider_user_id, provider_refresh_token, provider_permissions, provider, Active, company, firebase_device_token) VALUES (?,?,?,?,?,?,?,?,?) ";
 
 	private static final String INTERMEDIATE_SERVER_ENDPOINT = "https://rnsqs.fiviumdev.com:8443/rns-java-backend-war/internalServerActions";
 	private static final String INTERMEDIATE_SERVER_CREATE_ID_SUCCESS_MESSAGE = "New Patient ID created succesfully.";
