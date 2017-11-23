@@ -20,7 +20,7 @@ import graphql.Scalars;
 import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.GraphQLArgument;
 import graphql.schema.GraphQLObjectType;
-
+@Deprecated
 public class CreatePatientID_QF extends PAT_BaseQF {
 	private static Log logger = LogFactory.getLog(CreatePatientID_QF.class);
 	private static final String VERIFY_SUPER_USER = "SELECT Password, Salt from internaluser WHERE User = ?";
