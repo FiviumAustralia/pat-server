@@ -8,7 +8,7 @@ import graphql.schema.GraphQLSchema;
 /**
  * Servlet implementation class RNS_Backend
  */
-@Deprecated
+
 public class InternalServerServlet extends BaseServlet {
 	
 	private static final long serialVersionUID = 1L;

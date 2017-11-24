@@ -19,7 +19,7 @@ import graphql.Scalars;
 import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.GraphQLArgument;
 import graphql.schema.GraphQLObjectType;
-
+@Deprecated
 public class ListPatientsQF extends PAT_BaseQF {
 
 	private static final String LIST_PATIENTS_PREPARED_SQL_BASE_QUERY  =
