@@ -20,7 +20,6 @@ import graphql.Scalars;
 import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.GraphQLArgument;
 import graphql.schema.GraphQLObjectType;
-@Deprecated
 public class CreatePatientID_QF extends PAT_BaseQF {
 	private static Log logger = LogFactory.getLog(CreatePatientID_QF.class);
 	private static final String VERIFY_SUPER_USER = "SELECT Password, Salt from internaluser WHERE User = ?";
@@ -52,22 +51,19 @@ public class CreatePatientID_QF extends PAT_BaseQF {
 		Object[] queryArgs = new Object[] { environment.getArgument("p_id"), environment.getArgument("user"), environment.getArgument("password") };
         Object[] queryArgs_2 = new Object[] {environment.getArgument("user")};
 		Collection<Map<String, String>> resultCreatePatient;
-		String resultMessage = null;
+		Map<String, String> resultMap = new HashMap<String, String>();
 		try {
 			if (verifySuperUser(VERIFY_SUPER_USER, queryArgs_2, queryArgs, 2) == true) {
 			resultCreatePatient = PAT_DAO.executeStatement(CREATE_PATIENT_ID_PREPARED_SQL_QUERY, queryArgs);
-				resultMessage = "New Patient ID created succesfully.";	
+			resultMap.put("result","New Patient ID created succesfully.");
 			} else {
-				resultMessage = "Invalid Credentials to create patient";	
+				resultMap.put("result","Invalid Credentials to create patient");
 			}
 		} catch (Exception e) {
 			logger.error("Exception occurred trying to authenticate p_id", e);
-			resultMessage = e.getLocalizedMessage();
+			resultMap.put("result","Exception occurred trying to authenticate p_id"+e);
 		}
-		logger.info("CreatePatientId Result"+resultMessage);
-		Map<String, String> resultMap = new HashMap<String, String>();
-		resultMap.put("result", resultMessage);
-
+		logger.info("CreatePatientId Result"+resultMap.get("result"));
 		return resultMap;
 	}
 }

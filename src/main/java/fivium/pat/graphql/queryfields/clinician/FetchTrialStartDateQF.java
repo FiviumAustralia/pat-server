@@ -20,10 +20,9 @@ import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.GraphQLArgument;
 import graphql.schema.GraphQLObjectType;
 
-@Deprecated
 public class FetchTrialStartDateQF extends PAT_BaseQF {
 
-	private static final String FETCH_START_DATE = "SELECT MIN(dateA) FROM (SELECT date AS dateA FROM stepdata UNION ALL SELECT date AS dateB FROM weightdata) AS tab;";
+	private static final String FETCH_START_DATE = "select max(date) from fitness_data;";
 	private static Log logger = LogFactory.getLog(FetchTrialStartDateQF.class);
 	
 	@Override
@@ -47,21 +46,16 @@ public class FetchTrialStartDateQF extends PAT_BaseQF {
 	@Override
 	protected Object fetchData(DataFetchingEnvironment environment)  {
 		Map<String, String> resultMap = new HashMap<String, String>();
-		try {
 			Collection<Map<String, String>> sqlResult;
 			try {
 				sqlResult = PAT_DAO.executeStatement(FETCH_START_DATE, null);
 				if(!sqlResult.isEmpty()){
-					resultMap.put("result", sqlResult.iterator().next().get("MIN(dateA)"));
+					resultMap.put("result", sqlResult.iterator().next().get("max(date)"));
 				}
 			}	catch (Exception e) {
 				logger.error("Unexpected error occured", e);
 				throw new GraphQLException("Unexpected execution error", e);
 			}
-		} catch (Exception ex) {
-			logger.error("Unexpected error occured", ex);
-			resultMap.put("result", ex.getMessage());
-		}
 		return resultMap;
 	}
 }
