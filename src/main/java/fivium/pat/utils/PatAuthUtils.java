@@ -54,7 +54,13 @@ public class PatAuthUtils {
 		}
 
 		// verify the jwt was issued from this server
-		Claims jwtClaims = Jwts.parser().setSigningKey(Constants.JWT_KEY).parseClaimsJws(jwt).getBody();
+		Claims jwtClaims;
+		try {
+			jwtClaims = Jwts.parser().setSigningKey(Constants.JWT_KEY).parseClaimsJws(jwt).getBody();
+		} catch (Exception e) {
+			logger.error("Failed to verify supplied jwt", e);
+			return false;
+		}
 
 		// verify jwt
 		if (PATIENTS_URL_PATTERN.equals(requestUrlPattern)) {
