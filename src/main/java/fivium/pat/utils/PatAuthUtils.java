@@ -39,9 +39,9 @@ public class PatAuthUtils {
 	private static final String VERIFY_CLINICIAN_JWT_TOKEN_SQL_QUERY = "SELECT Role FROM clinicians WHERE Email = ?";
 	private static final String VERIFY_SUPERUSER_JWT_TOKEN_SQL_QUERY = "SELECT Role FROM clinicians WHERE Email = ? AND Role = \'superuser\'";
 
-	private static final String PATIENTS_URL_PATTERN = "";
-	private static final String CLINICIANS_URL_PATTERN = "";
-	private static final String SUPERUSER_URL_PATTERN = "";
+	private static final String PATIENTS_URL_PATTERN = "/PatientServlet";
+	private static final String CLINICIANS_URL_PATTERN = "/ClinicianServlet";
+	private static final String SUPERUSER_URL_PATTERN = "/SuperUserServlet";
 
 	private static Log logger = LogFactory.getLog(PatAuthUtils.class);
 
