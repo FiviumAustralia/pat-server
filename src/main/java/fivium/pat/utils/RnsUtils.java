@@ -44,11 +44,6 @@ public class RnsUtils {
 		return jsonRequestObject;
 	}
 
-	public static void set400Reponse(HttpServletResponse response, String message) throws IOException {
-		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-		response.getWriter().write(message);
-	}
-
 	public static byte[] getNextSalt() {
 		byte[] salt = new byte[16];
 		Constants.RANDOM.nextBytes(salt);

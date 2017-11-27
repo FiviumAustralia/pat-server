@@ -11,16 +11,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.google.gson.Gson;
 
 import fivium.pat.graphql.GraphQLController;
-import fivium.pat.utils.Constants;
+import fivium.pat.utils.PatUtils;
 import fivium.pat.utils.RnsUtils;
 import graphql.schema.GraphQLSchema;
 
@@ -69,26 +66,26 @@ public abstract class BaseServlet extends HttpServlet {
 		
 		// if request isn't a POST the return a 400 error
 		if (!request.getMethod().equals("POST")) {
-			RnsUtils.set400Reponse(response, "Invalid Request, " + request.getMethod() + " requests are not allowed.");
+			PatUtils.set400Reponse(response, "Invalid Request, " + request.getMethod() + " requests are not allowed.");
 			return false;
 		}
 		
 		// if the content type of the request isn't "application/json" OR "application/json; charset=utf-8" then return a 400 error
 		if (! VALID_CONTENT_TYPES.contains(request.getContentType())  ) {
-			RnsUtils.set400Reponse(response, "Invalid Request, " + request.getContentType() + " requests are not allowed");
+			PatUtils.set400Reponse(response, "Invalid Request, " + request.getContentType() + " requests are not allowed");
 			return false;
 		}
 		
 		// if JWT verification is required and fails then return a 400 error
 		if( servletRequiresJWT_Verification() && !RnsUtils.verifyToken(request.getHeader("Authorization"), TABLE_NAME)){
-			RnsUtils.set400Reponse(response, "Unauthorized access");
+			PatUtils.set400Reponse(response, "Unauthorized access");
 			return false;
 		}
 		
 		// if JSON request parsing fails then return a 400 error.  Otherwise, set the graphQL_Query local variable 
 		Map<String, Object> jsonRequestObject = RnsUtils.parseJsonRequest(request);
 		if (jsonRequestObject == null || !jsonRequestObject.containsKey("graphQL_Query")) {
-			RnsUtils.set400Reponse(response, "Invalid Request, failed to parse JSON request.");
+			PatUtils.set400Reponse(response, "Invalid Request, failed to parse JSON request.");
 			return false;
 		} else {
 			graphQL_Query = (String) jsonRequestObject.get("graphQL_Query");

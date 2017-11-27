@@ -1,11 +1,14 @@
 package fivium.pat.utils;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -57,5 +60,9 @@ public class PatUtils {
 			return ts.toString();
 		}
 		return ts2.toString();
+	}
+	public static void set400Reponse(HttpServletResponse response, String message) throws IOException {
+		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+		response.getWriter().write(message);
 	}
 }

@@ -54,5 +54,8 @@ public final class Constants {
 	public static final String FITBIT_REDIRECT_URI = "mppy%3A%2F%2Ffit";
 	
 	public static final String FIREBASE_NOTIFICATION_API = "https://fcm.googleapis.com/fcm/send";
+		
+	public static final String MOBILE_APP_LOGIN_CONTEXT = "mobile_app_login";
+	public static final String CLINICIAN_PORTAL_LOGIN_CONTEXT = "clinician_portal_login";
 	
 }

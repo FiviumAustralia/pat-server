@@ -4,12 +4,20 @@
 
 <web-app>
 	<display-name>Archetype Created Web Application</display-name>
+	
+	<!-- Filters -->
+	
 	<filter>
 		<filter-name>CORS_Filter</filter-name>
 		<display-name>CORS_Filter</display-name>
 		<description></description>
 		<filter-class>fivium.rns.servlets.CORS_Filter</filter-class>
 	</filter>
+	<filter-mapping>
+		<filter-name>CORS_Filter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
 	<filter>
 		<filter-name>Security_Filter</filter-name>
 		<display-name>Security_Filter</display-name>
@@ -17,43 +25,64 @@
 		<filter-class>fivium.rns.servlets.SecurityFilter</filter-class>
 	</filter>
 	<filter-mapping>
-		<filter-name>CORS_Filter</filter-name>
-		<url-pattern>/*</url-pattern>
+		<filter-name>Security_Filter</filter-name>
+		<url-pattern>/PatientServlet</url-pattern>
 	</filter-mapping>
 	<filter-mapping>
 		<filter-name>Security_Filter</filter-name>
-		<url-pattern>/RNS_Backend</url-pattern>
+		<url-pattern>/ClinicianServlet</url-pattern>
 	</filter-mapping>
+	<filter-mapping>
+		<filter-name>Security_Filter</filter-name>
+		<url-pattern>/SuperUserServlet</url-pattern>
+	</filter-mapping>
+	
+	<!-- Servlets --> 
+	
 	<servlet>
-		<servlet-name>RNS_Backend</servlet-name>
-		<display-name>RNS_Backend</display-name>
+		<servlet-name>LoginServlet</servlet-name>
+		<display-name>LoginServlet</display-name>
 		<description></description>
-		<servlet-class>fivium.rns.servlets.RNS_Backend</servlet-class>
-	</servlet>
-	<servlet>
-		<servlet-name>Login_Servlet</servlet-name>
-		<display-name>Login_Servlet</display-name>
-		<description></description>
-		<servlet-class>fivium.rns.servlets.LoginServlet</servlet-class>
-	</servlet>
-	<servlet>
-		<servlet-name>Internal_Actions_Servlet</servlet-name>
-		<display-name>Internal_Actions_Servlet</display-name>
-		<description></description>
-		<servlet-class>fivium.rns.servlets.InternalServerServlet</servlet-class>
+		<servlet-class>fivium.pat.servlets.LoginServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>Internal_Actions_Servlet</servlet-name>
-		<url-pattern>/internalServerActions</url-pattern>
+		<servlet-name>LoginServlet</servlet-name>
+		<url-pattern>/LoginServlet</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>PatientServlet</servlet-name>
+		<display-name>PatientServlet</display-name>
+		<description></description>
+		<servlet-class>fivium.pat.servlets.PatientServlet</servlet-class>
+	</servlet>
 	<servlet-mapping>
-		<servlet-name>RNS_Backend</servlet-name>
-		<url-pattern>/RNS_Backend</url-pattern>
+		<servlet-name>PatientServlet</servlet-name>
+		<url-pattern>/PatientServlet</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>ClinicianServlet</servlet-name>
+		<display-name>ClinicianServlet</display-name>
+		<description></description>
+		<servlet-class>fivium.pat.servlets.ClinicianServlet</servlet-class>
+	</servlet>
 	<servlet-mapping>
-		<servlet-name>Login_Servlet</servlet-name>
-		<url-pattern>/Login</url-pattern>
+		<servlet-name>ClinicianServlet</servlet-name>
+		<url-pattern>/ClinicianServlet</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>SuperUserServlet</servlet-name>
+		<display-name>SuperUserServlet</display-name>
+		<description></description>
+		<servlet-class>fivium.pat.servlets.SuperUserServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>SuperUserServlet</servlet-name>
+		<url-pattern>/SuperUserServlet</url-pattern>
+	</servlet-mapping>
+	
 	<servlet>
 		<servlet-name>QuartzInitializer</servlet-name>
 		<servlet-class>org.quartz.ee.servlet.QuartzInitializerServlet</servlet-class>
@@ -67,6 +96,7 @@
 		</init-param>
 		<load-on-startup>2</load-on-startup>
 	</servlet>
+	
 	<!-- <security-constraint>
 		<web-resource-collection>
 			<web-resource-name>QueuingServer</web-resource-name>
