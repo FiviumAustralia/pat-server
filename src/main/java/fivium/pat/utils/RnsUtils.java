@@ -30,20 +30,6 @@ public class RnsUtils {
 
 	private static Log logger = LogFactory.getLog(RnsUtils.class);
 
-	public static Map<String, Object> parseJsonRequest(HttpServletRequest httpRequest) throws IOException {
-
-		Gson gson = new Gson();
-		Map<String, Object> jsonRequestObject = new HashMap<String, Object>();
-		StringBuilder sb = new StringBuilder();
-		String s;
-		while ((s = httpRequest.getReader().readLine()) != null) {
-			sb.append(s);
-		}
-		String json = sb.toString();
-		jsonRequestObject = gson.fromJson(json, Map.class);
-		return jsonRequestObject;
-	}
-
 	public static byte[] getNextSalt() {
 		byte[] salt = new byte[16];
 		Constants.RANDOM.nextBytes(salt);

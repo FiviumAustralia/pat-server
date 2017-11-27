@@ -6,12 +6,17 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import com.google.gson.Gson;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -53,6 +58,7 @@ public class PatUtils {
 		String subject = claimsBody.getSubject();
 		return subject;
 	}
+	
 	public static String returnLatestTimeStamp(String lastSyncDate, String lastSyncTime) {
 		Timestamp ts = Timestamp.valueOf(lastSyncDate);
 		Timestamp ts2 = Timestamp.valueOf(lastSyncTime);
@@ -61,8 +67,23 @@ public class PatUtils {
 		}
 		return ts2.toString();
 	}
+	
 	public static void set400Reponse(HttpServletResponse response, String message) throws IOException {
 		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		response.getWriter().write(message);
+	}
+	
+	public static Map<String, Object> parseJsonRequest(HttpServletRequest httpRequest) throws IOException {
+
+		Gson gson = new Gson();
+		Map<String, Object> jsonRequestObject = new HashMap<String, Object>();
+		StringBuilder sb = new StringBuilder();
+		String s;
+		while ((s = httpRequest.getReader().readLine()) != null) {
+			sb.append(s);
+		}
+		String json = sb.toString();
+		jsonRequestObject = gson.fromJson(json, Map.class);
+		return jsonRequestObject;
 	}
 }

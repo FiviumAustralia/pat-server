@@ -18,13 +18,11 @@ import com.google.gson.Gson;
 
 import fivium.pat.graphql.GraphQLController;
 import fivium.pat.utils.PatUtils;
-import fivium.pat.utils.RnsUtils;
 import graphql.schema.GraphQLSchema;
 
 public abstract class BaseServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;	
-	private static final String TABLE_NAME = "internaluser";
 	
 	private static final List<String> VALID_CONTENT_TYPES = Arrays.asList(
 			"application/json", 
@@ -76,14 +74,8 @@ public abstract class BaseServlet extends HttpServlet {
 			return false;
 		}
 		
-		// if JWT verification is required and fails then return a 400 error
-		if( servletRequiresJWT_Verification() && !RnsUtils.verifyToken(request.getHeader("Authorization"), TABLE_NAME)){
-			PatUtils.set400Reponse(response, "Unauthorized access");
-			return false;
-		}
-		
 		// if JSON request parsing fails then return a 400 error.  Otherwise, set the graphQL_Query local variable 
-		Map<String, Object> jsonRequestObject = RnsUtils.parseJsonRequest(request);
+		Map<String, Object> jsonRequestObject = PatUtils.parseJsonRequest(request);
 		if (jsonRequestObject == null || !jsonRequestObject.containsKey("graphQL_Query")) {
 			PatUtils.set400Reponse(response, "Invalid Request, failed to parse JSON request.");
 			return false;
@@ -99,16 +91,6 @@ public abstract class BaseServlet extends HttpServlet {
 		HashMap<String, Object> vars = new HashMap<String, Object>();
 		vars.put("jwt_token", servletRequest.getHeader("Authorization"));		
 		return vars;	
-	}
-	
-	/**
-	 * By default Servlets don't require JWT verification since the JWT token will be verified by the SecurityFilter class.
-	 * However Servlets that are excluded from the SecurityFilter in the web.xml should override this method and return true to perform
-	 * JWT verification at the Servlet level.
-	 * @return whether JWT verification is required at the servlet level
-	 */
-	protected boolean servletRequiresJWT_Verification() {
-		return false;
 	}
 	
 	/**
