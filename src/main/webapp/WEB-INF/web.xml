@@ -11,7 +11,7 @@
 		<filter-name>CORS_Filter</filter-name>
 		<display-name>CORS_Filter</display-name>
 		<description></description>
-		<filter-class>fivium.rns.servlets.CORS_Filter</filter-class>
+		<filter-class>fivium.pat.servlets.CORS_Filter</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>CORS_Filter</filter-name>
@@ -22,7 +22,7 @@
 		<filter-name>Security_Filter</filter-name>
 		<display-name>Security_Filter</display-name>
 		<description></description>
-		<filter-class>fivium.rns.servlets.SecurityFilter</filter-class>
+		<filter-class>fivium.pat.servlets.SecurityFilter</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>Security_Filter</filter-name>
