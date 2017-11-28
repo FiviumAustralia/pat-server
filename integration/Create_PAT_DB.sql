@@ -89,6 +89,7 @@ CREATE TABLE IF NOT EXISTS `notifications` (
   `p_id` varchar(50) NOT NULL,
   `notification_date` date DEFAULT NULL,
   `notification_text` varchar(50) DEFAULT NULL,
+  `delivery_status` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`p_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -118,9 +119,9 @@ CREATE TABLE IF NOT EXISTS `patient` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
--- Dumping structure for table pat.patient_deprecated
-DROP TABLE IF EXISTS `patient_deprecated`;
-CREATE TABLE IF NOT EXISTS `patient_deprecated` (
+-- Dumping structure for table pat.patient_details
+DROP TABLE IF EXISTS `patient_details`;
+CREATE TABLE IF NOT EXISTS `patient_details` (
   `study_id` varchar(50) DEFAULT NULL,
   `first_name` varchar(50) DEFAULT NULL,
   `last_name` varchar(50) DEFAULT NULL,
