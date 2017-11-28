@@ -93,7 +93,7 @@ public class PatAuthUtils {
 			}
 
 			// Extract company from auth query result
-			String company = authenticatePatientResult.iterator().next().get("company");
+			String company = authenticatePatientResult.iterator().next().get("Company");
 
 			// Create JWT token for the patient
 			String token = issueJwtToken(requestPatientId, MOBILE_APP_LOGIN_CONTEXT, PATIENT_ROLE);
@@ -175,13 +175,13 @@ public class PatAuthUtils {
 		try {
 
 			// verify jwt was created using patient login
-			if (!jwtClaims.get(JWT_CONTEXT_CLAIM_KEY).equals(MOBILE_APP_LOGIN_CONTEXT)) {
+			if (!MOBILE_APP_LOGIN_CONTEXT.equals(jwtClaims.get(JWT_CONTEXT_CLAIM_KEY))) {
 				throw new Exception("Supplied JWT token contains invalid login_context claim!"
 						+ " Expected: " + MOBILE_APP_LOGIN_CONTEXT + " but contained: " + jwtClaims.get(JWT_CONTEXT_CLAIM_KEY));
 			}
 			
 			// verify jwt has patient role
-			if (!jwtClaims.get(JWT_ROLE_CLAIM_KEY).equals(PATIENT_ROLE)) {
+			if (!PATIENT_ROLE.equals(jwtClaims.get(JWT_ROLE_CLAIM_KEY))) {
 				throw new Exception("Supplied JWT token contains invalid role claim!"
 						+ " Expected: " + PATIENT_ROLE + " but contained: " + jwtClaims.get(JWT_ROLE_CLAIM_KEY));
 			}
@@ -208,7 +208,7 @@ public class PatAuthUtils {
 		try {
 			
 			// verify jwt was created using clinician login
-			if (!jwtClaims.get(JWT_CONTEXT_CLAIM_KEY).equals(CLINICIAN_PORTAL_LOGIN_CONTEXT)) {
+			if (!CLINICIAN_PORTAL_LOGIN_CONTEXT.equals(jwtClaims.get(JWT_CONTEXT_CLAIM_KEY))) {
 				throw new Exception("Supplied JWT token contains invalid login_context claim!"
 						+ " Expected: " + CLINICIAN_PORTAL_LOGIN_CONTEXT + " but contained: " + jwtClaims.get(JWT_CONTEXT_CLAIM_KEY));
 			}
@@ -241,13 +241,13 @@ public class PatAuthUtils {
 		try {
 
 			// verify jwt was created using clinician login
-			if (!jwtClaims.get(JWT_CONTEXT_CLAIM_KEY).equals(CLINICIAN_PORTAL_LOGIN_CONTEXT)) {
+			if (!CLINICIAN_PORTAL_LOGIN_CONTEXT.equals(jwtClaims.get(JWT_CONTEXT_CLAIM_KEY))) {
 				throw new Exception("Supplied JWT token contains invalid login_context claim!"
 						+ " Expected: " + CLINICIAN_PORTAL_LOGIN_CONTEXT + " but contained: " + jwtClaims.get(JWT_CONTEXT_CLAIM_KEY));
 			}
 			
 			// verify jwt has superuser role
-			if (!jwtClaims.get(JWT_ROLE_CLAIM_KEY).equals(SUPERUSER_ROLE)) {
+			if (!SUPERUSER_ROLE.equals(jwtClaims.get(JWT_ROLE_CLAIM_KEY))) {
 				throw new Exception("Supplied JWT token contains invalid role claim!"
 						+ " Expected: " + SUPERUSER_ROLE + " but contained: " + jwtClaims.get(JWT_ROLE_CLAIM_KEY));
 			}
