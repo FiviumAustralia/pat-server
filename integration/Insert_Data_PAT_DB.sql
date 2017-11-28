@@ -89,7 +89,7 @@ CREATE TABLE IF NOT EXISTS `notifications` (
 /*!40000 ALTER TABLE `notifications` DISABLE KEYS */;
 INSERT INTO `notifications` (`p_id`, `notification_date`, `notification_text`, `delivery_status`) VALUES
 	('1', '2017-11-06', 'Please charge your Fitbit', 'false'),
-	('1', '2017-11-09', 'Please sync with Fitbit', 'false');
+	('2', '2017-11-09', 'Please sync with Fitbit', 'false');
 /*!40000 ALTER TABLE `notifications` ENABLE KEYS */;
 
 -- Dumping structure for table pat.patient
