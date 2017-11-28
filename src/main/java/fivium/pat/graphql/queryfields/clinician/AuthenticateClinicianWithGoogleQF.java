@@ -25,7 +25,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-import fivium.pat.graphql.queryfields.PAT_BaseQF;
+import fivium.pat.graphql.PAT_BaseQF;
 import fivium.pat.utils.Constants;
 import fivium.pat.utils.PAT_DAO;
 import graphql.schema.DataFetchingEnvironment;

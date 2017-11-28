@@ -23,7 +23,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 
 import com.google.gson.Gson;
 
-import fivium.pat.graphql.queryfields.PAT_BaseQF;
+import fivium.pat.graphql.PAT_BaseQF;
 import fivium.pat.provider.data.AppData;
 import fivium.pat.provider.utils.FitbitDataRetriever;
 import fivium.pat.utils.Constants;
@@ -34,8 +34,8 @@ import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.GraphQLArgument;
 import graphql.schema.GraphQLObjectType;
 
-public class ProviderTokenQF extends PAT_BaseQF {
-	private static Log logger = LogFactory.getLog(ProviderTokenQF.class);
+public class StoreProviderTokenQF extends PAT_BaseQF {
+	private static Log logger = LogFactory.getLog(StoreProviderTokenQF.class);
 
 	private static final String STORE_REFRESH_TOKEN_SQL_QUERY = "UPDATE patient SET provider_user_id=?, provider_refresh_token=?, provider_permissions=?, provider=? WHERE p_id=?";
 	private static final String FITBIT_ACESS_TOKEN_ENDPOINT = "https://api.fitbit.com/oauth2/token";

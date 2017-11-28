@@ -14,7 +14,7 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import fivium.pat.graphql.queryfields.PAT_BaseQF;
+import fivium.pat.graphql.PAT_BaseQF;
 import fivium.pat.utils.PAT_DAO;
 import graphql.GraphQLException;
 import graphql.Scalars;
@@ -22,7 +22,6 @@ import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.GraphQLArgument;
 import graphql.schema.GraphQLObjectType;
 
-@Deprecated
 public class GenerateCSV_QF extends PAT_BaseQF {
 
 	public static final String BASE_STEPS_FETCH_QUERY = "SELECT x.date, x.study_id, p.mrn, p.first_name, p.last_name, p.dob, x.steps FROM stepdata x INNER JOIN patient p ON x.study_id = p.study_id ";

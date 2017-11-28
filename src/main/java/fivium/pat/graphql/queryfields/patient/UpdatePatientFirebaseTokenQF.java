@@ -12,8 +12,8 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import fivium.pat.graphql.queryfields.PAT_BaseQF;
 import fivium.pat.utils.PatUtils;
+import fivium.pat.graphql.PAT_BaseQF;
 import fivium.pat.utils.PAT_DAO;
 import graphql.GraphQLException;
 import graphql.Scalars;

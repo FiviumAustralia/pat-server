@@ -14,7 +14,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.mindrot.jbcrypt.BCrypt;
 
-import fivium.pat.graphql.queryfields.PAT_BaseQF;
+import fivium.pat.graphql.PAT_BaseQF;
 import fivium.pat.utils.Constants;
 import fivium.pat.utils.PAT_DAO;
 import graphql.GraphQLException;
