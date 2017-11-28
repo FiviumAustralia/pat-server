@@ -3,7 +3,7 @@ package fivium.pat.servlets;
 import fivium.pat.graphql.schema.ClinicianActionsSchema;
 import graphql.schema.GraphQLSchema;
 
-public class CliniciansServlet extends BaseServlet {
+public class ClinicianServlet extends BaseServlet {
 
 	private static final long serialVersionUID = 1L;
 

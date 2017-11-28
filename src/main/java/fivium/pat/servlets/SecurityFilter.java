@@ -11,10 +11,10 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import fivium.pat.utils.RnsUtils;
+import fivium.pat.utils.PatAuthUtils;
+import fivium.pat.utils.PatUtils;
 
 public class SecurityFilter implements Filter {
-	private static String TABLE_NAME = "patient";
 
 	public void init(FilterConfig filterConfig) throws ServletException {
 		// TODO Auto-generated method stub
@@ -24,10 +24,10 @@ public class SecurityFilter implements Filter {
 			throws IOException, ServletException {
 		HttpServletRequest servletRequest = (HttpServletRequest) request;
 		String jwt_Token = servletRequest.getHeader("Authorization");
-		if (RnsUtils.verifyToken(jwt_Token, TABLE_NAME)) {
+		if (PatAuthUtils.isValidJWT(jwt_Token, servletRequest.getServletPath())) {
 			chain.doFilter(request, response);
 		} else {
-			RnsUtils.set400Reponse((HttpServletResponse) response, "Invalid Request.");
+			PatUtils.set400Reponse((HttpServletResponse) response, "Invalid Request.");
 			return;
 		}
 	}
