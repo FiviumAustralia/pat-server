@@ -3,7 +3,7 @@
 Example Server Requests:
 
 
-1. Patient Login
+## 1. Patient Login
 
 URL:
 [http://localhost:9080/pat-server-war/LoginServlet](http://localhost:9080/pat-server-war/LoginServlet)
@@ -23,7 +23,7 @@ Result:
 ```
 
 
-2. Clinician/SuperUser Login
+## 2. Clinician/SuperUser Login
 
 URL:
 [http://localhost:9080/pat-server-war/LoginServlet](http://localhost:9080/pat-server-war/LoginServlet)
@@ -43,7 +43,7 @@ Result:
 {"Firstname":"Bat","Role":"superuser","jwt_token":"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjbGF5dG9uLmJsYWtlQGZpdml1bS5jb20uYXUiLCJsb2dpbl9jb250ZXh0IjoiY2xpbmljaWFuX3BvcnRhbF9sb2dpbiIsInJvbGUiOiJzdXBlcnVzZXIifQ.GlndvjsiEFfP_Oc3QtcNTnGiYbGjgBJKZdfi62Ub3IdhWpowGm0JFpciVNEB0hqSbNbJeat0DxPdjL80qveVeQ","Lastname":"Man"}
 ```
 
-3. PatientServlet - UpdateFireBaseToken
+## 3. PatientServlet - UpdateFireBaseToken
 
 URL:
 [http://localhost:9080/pat-server-war/PatientServlet](http://localhost:9080/pat-server-war/PatientServlet)
@@ -61,7 +61,7 @@ Result:
 ```JSON
 {"UpdatePatientFirebaseToken":{"result":"Sucesfully updated firebase token."}}
 ```
-4. ClinicianServlet - ListPatients
+## 4. ClinicianServlet - ListPatients
 
 URL:
 [http://localhost:9080/pat-server-war/ClinicianServlet](http://localhost:9080/pat-server-war/ClinicianServlet)
@@ -80,7 +80,7 @@ Result:
 {"ListPatients":[]} // BUG with sql!
 ```
 
-5. SuperUserServlet - ListClinicians
+## 5. SuperUserServlet - ListClinicians
 
 URL:
 [http://localhost:9080/pat-server-war/SuperUserServlet](http://localhost:9080/pat-server-war/SuperUserServlet)
