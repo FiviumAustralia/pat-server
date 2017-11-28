@@ -26,15 +26,14 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import fivium.pat.graphql.queryfields.PAT_BaseQF;
+import fivium.pat.utils.Constants;
 import fivium.pat.utils.PAT_DAO;
-import fivium.pat.utils.LegacyInternalServerUtils;
 import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.GraphQLArgument;
 import graphql.schema.GraphQLObjectType;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
-@Deprecated
 public class AuthenticateClinicianWithGoogleQF extends PAT_BaseQF {
 	private static Log logger = LogFactory.getLog(AuthenticateClinicianWithGoogleQF.class);
 	private static final String GOOGLE_AUTH_VERIFICATION_URL = "https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=";
@@ -71,7 +70,7 @@ public class AuthenticateClinicianWithGoogleQF extends PAT_BaseQF {
 					Map<String, String> queryResultMap = queryResult.iterator().next();
 					String role = queryResultMap.get("Role");
 					String token = Jwts.builder().setSubject(graphqlResultMap.get("email"))
-							.signWith(SignatureAlgorithm.HS512, LegacyInternalServerUtils.JWT_KEY).compact();
+							.signWith(SignatureAlgorithm.HS512, Constants.JWT_KEY).compact();
 					resultMap.put("jwt_token", token);
 					resultMap.put("Role", role);
 					Object[] queryArgsUpdate = new Object[] { token, graphqlResultMap.get("email") };

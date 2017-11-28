@@ -15,7 +15,7 @@ import org.apache.commons.logging.LogFactory;
 import org.mindrot.jbcrypt.BCrypt;
 
 import fivium.pat.graphql.queryfields.PAT_BaseQF;
-import fivium.pat.utils.LegacyInternalServerUtils;
+import fivium.pat.utils.Constants;
 import fivium.pat.utils.PAT_DAO;
 import graphql.GraphQLException;
 import graphql.Scalars;
@@ -26,11 +26,10 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 
-@Deprecated
 public class CliniciansChangePasswordQF extends PAT_BaseQF {
 
-	private static final String CLINICIAN_CHANGE_PASSWORD_PREPARED_SQL_QUERY = "UPDATE rns_internal.clinicians SET Password = ? WHERE Email=?;";
-	private static final String GET_EXISTING_PASSWORD = "SELECT Password FROM rns_internal.clinicians WHERE Email=?;";
+	private static final String CLINICIAN_CHANGE_PASSWORD_PREPARED_SQL_QUERY = "UPDATE pat.clinicians SET Password = ? WHERE Email=?;";
+	private static final String GET_EXISTING_PASSWORD = "SELECT Password FROM pat.clinicians WHERE Email=?;";
 
 	private static Log logger = LogFactory.getLog(CliniciansChangePasswordQF.class);
 	
@@ -55,7 +54,7 @@ public class CliniciansChangePasswordQF extends PAT_BaseQF {
 			Object[] queryArgs = new Object[] { environment.getArgument("clinician_new_password"),
 					environment.getArgument("jwt"), environment.getArgument("clinician_current_password"), };
 
-			Jws<Claims> claims = Jwts.parser().setSigningKey(LegacyInternalServerUtils.JWT_KEY).parseClaimsJws(queryArgs[1].toString());
+			Jws<Claims> claims = Jwts.parser().setSigningKey(Constants.JWT_KEY).parseClaimsJws(queryArgs[1].toString());
 			Claims claimsBody = claims.getBody();
 			String subject = claimsBody.getSubject();
 			queryArgs[1] = subject;
