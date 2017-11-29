@@ -57,8 +57,6 @@ public class AddPatientQF extends PAT_BaseQF {
 		Map<String, String> resultMap = new HashMap<String, String>();
 
 		try {
-			// build query params for inserting new user into internal database
-			// TBD where the company information has to be extracted.
 			Object[] queryArgsNewPatient = new Object[] { environment.getArgument("patient_study_id"), "", "", "", "", "","Not Active", environment.getArgument("company"), "" };
 
 			Object[] queryArgsNewPatientDetails = new Object[] { 
