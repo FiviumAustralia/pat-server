@@ -3,7 +3,7 @@ package fivium.pat.graphql.schema;
 import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition;
 import static graphql.schema.GraphQLObjectType.newObject;
 
-import fivium.pat.graphql.queryfields.patient.ProviderTokenQF;
+import fivium.pat.graphql.queryfields.patient.StoreProviderTokenQF;
 import fivium.pat.graphql.queryfields.patient.RetrieveCharitableCompanyList_QF;
 import fivium.pat.graphql.queryfields.patient.RetrieveProviderDataQF;
 import fivium.pat.graphql.queryfields.patient.RetrieveRSS_ListQF;
@@ -32,7 +32,7 @@ public class PatientActionsSchema {
 	private PatientActionsSchema() {
 
 		RetrieveCharitableCompanyList_QF companyList_QF = new RetrieveCharitableCompanyList_QF();
-		ProviderTokenQF saveProviderTokenQF = new ProviderTokenQF();
+		StoreProviderTokenQF saveProviderTokenQF = new StoreProviderTokenQF();
 		RetrieveProviderDataQF providerData = new RetrieveProviderDataQF();
 		RetrieveRSS_ListQF rssListQF = new RetrieveRSS_ListQF();
 		UpdatePatientFirebaseTokenQF updatePatientFirebaseTokenQF = new UpdatePatientFirebaseTokenQF();

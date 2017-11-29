@@ -16,7 +16,7 @@ import org.apache.commons.logging.LogFactory;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import fivium.pat.graphql.queryfields.PAT_BaseQF;
+import fivium.pat.graphql.PAT_BaseQF;
 import fivium.pat.utils.PAT_DAO;
 import graphql.GraphQLException;
 import graphql.Scalars;
@@ -24,7 +24,6 @@ import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.GraphQLArgument;
 import graphql.schema.GraphQLObjectType;
 
-@Deprecated
 public class GenerateGraphDataQF extends PAT_BaseQF {
 
   private static final String GENERATE_GRAPH_PREPARED_SQL_QUERY = "SELECT stepdata.steps, patient.first_name FROM stepdata INNER JOIN patient ON stepdata.study_id = patient.study_id WHERE date= (SELECT MAX(date) FROM stepdata) ";

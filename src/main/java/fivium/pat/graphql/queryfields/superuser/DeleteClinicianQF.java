@@ -13,7 +13,7 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import fivium.pat.graphql.queryfields.PAT_BaseQF;
+import fivium.pat.graphql.PAT_BaseQF;
 import fivium.pat.utils.PAT_DAO;
 import graphql.GraphQLException;
 import graphql.Scalars;
@@ -21,7 +21,6 @@ import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.GraphQLArgument;
 import graphql.schema.GraphQLObjectType;
 
-@Deprecated
 public class DeleteClinicianQF extends PAT_BaseQF {
 
 	private static final String DELETE_CLINICIAN_PREPARED_SQL_QUERY = "DELETE FROM rns_internal.clinicians WHERE Email=?;";

@@ -15,7 +15,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.google.gson.Gson;
 
-import fivium.pat.graphql.queryfields.PAT_BaseQF;
+import fivium.pat.graphql.PAT_BaseQF;
 import fivium.pat.provider.data.AppData;
 import fivium.pat.provider.utils.FitbitDataRetriever;
 import fivium.pat.utils.Constants;
