@@ -35,7 +35,6 @@ public class AddPatientQF extends PAT_BaseQF {
 	@Override
 	protected List<GraphQLArgument> defineArguments() {
 		return Arrays.asList(
-				new GraphQLArgument("clinician_jwt", GraphQLString),
 				new GraphQLArgument("patient_first_name", GraphQLString),
 				new GraphQLArgument("patient_last_name", GraphQLString),
 				new GraphQLArgument("patient_study_id", GraphQLString),
@@ -70,8 +69,8 @@ public class AddPatientQF extends PAT_BaseQF {
 					environment.getArgument("patient_address"),                     // #8 address
 					environment.getArgument("patient_next_of_kin_relationship"),    // #9 next_of_kin_relationship
 					environment.getArgument("patient_next_of_kin_first_name"),      //#10 next_of_kin_first_name
-					environment.getArgument("patient_next_of_kin_last_name"),       //#12 next_of_kin_last_name
-					environment.getArgument("patient_next_of_kin_contact_number"),  //#13 next_of_kin_contact_number
+					environment.getArgument("patient_next_of_kin_last_name"),       //#11 next_of_kin_last_name
+					environment.getArgument("patient_next_of_kin_contact_number"),  //#12 next_of_kin_contact_number
 					};
 
 			// insert new patient details into internal db
