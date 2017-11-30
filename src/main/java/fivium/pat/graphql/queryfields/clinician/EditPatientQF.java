@@ -25,7 +25,7 @@ public class EditPatientQF extends PAT_BaseQF {
 
 	@Override
 	protected GraphQLObjectType defineField() {
-		return newObject().name("EditPatient").description("Makes a request to the intermediate server to edit patient")
+		return newObject().name("EditPatient").description("Makes a request to the server to edit patient")
 				.field(newFieldDefinition().name("result").type(GraphQLString)).build();
 	}
 
