@@ -5,6 +5,7 @@ import static graphql.schema.GraphQLObjectType.newObject;
 
 import fivium.pat.graphql.queryfields.clinician.AddNewRSS_FeedQF;
 import fivium.pat.graphql.queryfields.clinician.AddPatientQF;
+import fivium.pat.graphql.queryfields.clinician.AuthenticateClinicianWithGoogleQF;
 import fivium.pat.graphql.queryfields.clinician.CliniciansChangePasswordQF;
 import fivium.pat.graphql.queryfields.clinician.EditPatientQF;
 import fivium.pat.graphql.queryfields.clinician.FetchTrialStartDateQF;
@@ -36,72 +37,62 @@ public class ClinicianActionsSchema {
 
 	private ClinicianActionsSchema() {
 
-		CreateCompany_QF createCompany_QF = new CreateCompany_QF();
 		AddNewRSS_FeedQF addNewRssFeedQF = new AddNewRSS_FeedQF();
-		
+		AddPatientQF addPatientQF = new AddPatientQF();
+		AuthenticateClinicianWithGoogleQF authenticateClinicianWithGoogleQF = new AuthenticateClinicianWithGoogleQF();
+		CliniciansChangePasswordQF changePassword = new CliniciansChangePasswordQF();
+		EditPatientQF editPatient = new EditPatientQF();
+		FetchTrialStartDateQF fetchDates = new FetchTrialStartDateQF();
 	    GenerateCSV_QF generateCSV_QF = new GenerateCSV_QF();
-	    AddPatientQF addPatientQF = new AddPatientQF();
-	    ListPatientsQF listPatientsQF = new ListPatientsQF();
-	    CliniciansChangePasswordQF changePassword = new CliniciansChangePasswordQF();
-	    EditPatientQF editPatient = new EditPatientQF();
-	    ListCliniciansQF listCliniciansQF = new ListCliniciansQF();
-	    FetchTrialStartDateQF fetchDates = new FetchTrialStartDateQF();
 	    GenerateGraphDataQF graphData = new GenerateGraphDataQF();
+	    ListPatientsQF listPatientsQF = new ListPatientsQF();
 
-		GraphQLObjectType rootObjectType = newObject().name("userQueries")
-				.field(newFieldDefinition().type(createCompany_QF.getField()).name("CreateCompany")
-						.dataFetcher(createCompany_QF).argument(createCompany_QF.getArguments()))
-	            .field(newFieldDefinition().type(addNewRssFeedQF.getField()).name("AddNewRSS_Feed")
-	            		.dataFetcher(addNewRssFeedQF).argument(addNewRssFeedQF.getArguments()))
-	            
+		GraphQLObjectType rootObjectType = newObject().name("userQueries")				
+	            .field(newFieldDefinition()
+	            		.type(addNewRssFeedQF.getField())
+	            		.name("AddNewRSS_Feed")
+	            		.dataFetcher(addNewRssFeedQF)
+	            		.argument(addNewRssFeedQF.getArguments()))            
 	            .field(newFieldDefinition()
 	                    .type(addPatientQF.getField())
 	                    .name("AddPatient")
 	                    .dataFetcher(addPatientQF)
-	                    .argument(addPatientQF.getArguments())
-	            )
+	                    .argument(addPatientQF.getArguments()))
+	            .field(newFieldDefinition()
+	            		.type(authenticateClinicianWithGoogleQF.getField())
+	            		.name("AuthenticateClinicianUsingGoogle")
+	            		.dataFetcher(authenticateClinicianWithGoogleQF)
+	            		.argument(authenticateClinicianWithGoogleQF.getArguments()))
+	            .field(newFieldDefinition()
+	            		.type(changePassword.getField())
+	            		.name("ChangePassword")
+	            		.dataFetcher(changePassword)
+	            		.argument(changePassword.getArguments()))
 	            .field(newFieldDefinition()
 	                    .type(editPatient.getField())
 	                    .name("EditPatient")
 	                    .dataFetcher(editPatient)
-	                    .argument(editPatient.getArguments())
-	            )
+	                    .argument(editPatient.getArguments()))
 	            .field(newFieldDefinition()
-	                    .type(changePassword.getField())
-	                    .name("ChangePassword")
-	                    .dataFetcher(changePassword)
-	                    .argument(changePassword.getArguments())
-	            )
+	            		.type(fetchDates.getField() )
+	            		.name("FetchDates")
+	            		.dataFetcher(fetchDates)
+	            		.argument(fetchDates.getArguments()))  
+	            .field(newFieldDefinition()
+	            		.type(generateCSV_QF.getField() )
+	            		.name("GenerateCSV")
+	            		.dataFetcher(generateCSV_QF)
+	            		.argument(generateCSV_QF.getArguments()))
+	            .field(newFieldDefinition()
+	            		.type(graphData.getField() )
+	            		.name("GraphData")
+	            		.dataFetcher(graphData)
+	            		.argument(graphData.getArguments()))
 	            .field(newFieldDefinition()
 	                    .type(new GraphQLList(listPatientsQF.getField()))
 	                    .name("ListPatients")
 	                    .dataFetcher(listPatientsQF)
-	                    .argument(listPatientsQF.getArguments())
-	            )
-	            .field(newFieldDefinition()
-	                    .type(new GraphQLList(listCliniciansQF.getField()))
-	                    .name("ListClinicians")
-	                    .dataFetcher(listCliniciansQF)
-	                    .argument(listCliniciansQF.getArguments())
-	            )
-	            .field(newFieldDefinition()
-	                    .type(generateCSV_QF.getField() )
-	                    .name("GenerateCSV")
-	                    .dataFetcher(generateCSV_QF)
-	                    .argument(generateCSV_QF.getArguments())
-	            )
-	            .field(newFieldDefinition()
-	                .type(fetchDates.getField() )
-	                .name("FetchDates")
-	                .dataFetcher(fetchDates)
-	                .argument(fetchDates.getArguments())
-	            )  
-	            .field(newFieldDefinition()
-	                .type(graphData.getField() )
-	                .name("GraphData")
-	                .dataFetcher(graphData)
-	                .argument(graphData.getArguments())
-	            )
+	                    .argument(listPatientsQF.getArguments()))
 				.build();
 		clinicianActionsSchema = new GraphQLSchema(rootObjectType);
 	}

@@ -32,21 +32,20 @@ public class PatientActionsSchema {
 	private PatientActionsSchema() {
 
 		RetrieveCharitableCompanyList_QF companyList_QF = new RetrieveCharitableCompanyList_QF();
-		StoreProviderTokenQF saveProviderTokenQF = new StoreProviderTokenQF();
 		RetrieveProviderDataQF providerData = new RetrieveProviderDataQF();
 		RetrieveRSS_ListQF rssListQF = new RetrieveRSS_ListQF();
+		StoreProviderTokenQF saveProviderTokenQF = new StoreProviderTokenQF();
 		UpdatePatientFirebaseTokenQF updatePatientFirebaseTokenQF = new UpdatePatientFirebaseTokenQF();
 
 		GraphQLObjectType rootObjectType = newObject().name("userQueries")
 				.field(newFieldDefinition().type(companyList_QF.getField()).name("RetrieveChariatbleCompanies")
 						.dataFetcher(companyList_QF).argument(companyList_QF.getArguments()))
-				.field(newFieldDefinition().type(saveProviderTokenQF.getField()).name("SaveProviderToken")
-						.dataFetcher(saveProviderTokenQF).argument(saveProviderTokenQF.getArguments()))
 				.field(newFieldDefinition().type(providerData.getField()).name("RetrieveProviderData")
 						.dataFetcher(providerData).argument(providerData.getArguments()))
-	            .field(newFieldDefinition()
-	                    .type(new GraphQLList(rssListQF.getField())).name("RetrieveRSS_List")
-	                    .dataFetcher(rssListQF).argument(rssListQF.getArguments()))
+				.field(newFieldDefinition().type(new GraphQLList(rssListQF.getField())).name("RetrieveRSS_List")
+						.dataFetcher(rssListQF).argument(rssListQF.getArguments()))
+				.field(newFieldDefinition().type(saveProviderTokenQF.getField()).name("SaveProviderToken")
+						.dataFetcher(saveProviderTokenQF).argument(saveProviderTokenQF.getArguments()))
 	            .field(newFieldDefinition().type(updatePatientFirebaseTokenQF.getField()).name("UpdatePatientFirebaseToken")
 	            		.dataFetcher(updatePatientFirebaseTokenQF).argument(updatePatientFirebaseTokenQF.getArguments()))
 				.build();
