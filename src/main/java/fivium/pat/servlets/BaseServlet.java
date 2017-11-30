@@ -1,5 +1,7 @@
 package fivium.pat.servlets;
 
+import static fivium.pat.utils.Constants.JWT_GRAPHQL_QUERY_PARAM;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -89,7 +91,7 @@ public abstract class BaseServlet extends HttpServlet {
 	private Map<String, Object> createGraphQL_QueryVariables(HttpServletRequest servletRequest) {
 		
 		HashMap<String, Object> vars = new HashMap<String, Object>();
-		vars.put("jwt_token", servletRequest.getHeader("Authorization"));		
+		vars.put(JWT_GRAPHQL_QUERY_PARAM, servletRequest.getHeader("Authorization"));		
 		return vars;	
 	}
 	

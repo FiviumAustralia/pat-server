@@ -1,5 +1,6 @@
 package fivium.pat.graphql.queryfields.clinician;
 
+import static fivium.pat.utils.Constants.JWT_GRAPHQL_QUERY_PARAM;
 import static graphql.Scalars.GraphQLString;
 import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition;
 import static graphql.schema.GraphQLObjectType.newObject;
@@ -15,16 +16,12 @@ import org.apache.commons.logging.LogFactory;
 import org.mindrot.jbcrypt.BCrypt;
 
 import fivium.pat.graphql.PAT_BaseQF;
-import fivium.pat.utils.Constants;
 import fivium.pat.utils.PAT_DAO;
-import graphql.GraphQLException;
+import fivium.pat.utils.PatUtils;
 import graphql.Scalars;
 import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.GraphQLArgument;
 import graphql.schema.GraphQLObjectType;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
 
 public class CliniciansChangePasswordQF extends PAT_BaseQF {
 
@@ -32,7 +29,7 @@ public class CliniciansChangePasswordQF extends PAT_BaseQF {
 	private static final String GET_EXISTING_PASSWORD = "SELECT Password FROM pat.clinicians WHERE Email=?;";
 
 	private static Log logger = LogFactory.getLog(CliniciansChangePasswordQF.class);
-	
+
 	@Override
 	protected GraphQLObjectType defineField() {
 		return newObject().name("ChangePassword")
@@ -42,7 +39,7 @@ public class CliniciansChangePasswordQF extends PAT_BaseQF {
 
 	@Override
 	protected List<GraphQLArgument> defineArguments() {
-		return Arrays.asList(new GraphQLArgument("jwt", Scalars.GraphQLString),
+		return Arrays.asList(
 				new GraphQLArgument("clinician_current_password", Scalars.GraphQLString),
 				new GraphQLArgument("clinician_new_password", Scalars.GraphQLString));
 	}
@@ -51,40 +48,37 @@ public class CliniciansChangePasswordQF extends PAT_BaseQF {
 	protected Object fetchData(DataFetchingEnvironment environment) {
 		Map<String, String> resultMap = new HashMap<String, String>();
 		try {
-			Object[] queryArgs = new Object[] { environment.getArgument("clinician_new_password"),
-					environment.getArgument("jwt"), environment.getArgument("clinician_current_password"), };
 
-			Jws<Claims> claims = Jwts.parser().setSigningKey(Constants.JWT_KEY).parseClaimsJws(queryArgs[1].toString());
-			Claims claimsBody = claims.getBody();
-			String subject = claimsBody.getSubject();
-			queryArgs[1] = subject;
-			Collection<Map<String, String>> sqlResult;
-			Object[] queryArgsExistingPassword = new Object[] { subject };
-			try {
-				sqlResult = PAT_DAO.executeStatement(GET_EXISTING_PASSWORD, queryArgsExistingPassword);
-				if (!sqlResult.isEmpty()) {
-					Map<String, String> aMap = new HashMap<String, String>();
-					aMap = sqlResult.iterator().next();
-					String password = aMap.get("Password");
-					if (BCrypt.checkpw(queryArgs[2].toString(), password)) {
-						String hashed = BCrypt.hashpw(queryArgs[0].toString(), BCrypt.gensalt());
-						sqlResult = PAT_DAO.executeStatement(CLINICIAN_CHANGE_PASSWORD_PREPARED_SQL_QUERY,
-								new Object[] { hashed, subject });
-						resultMap.put("result", "Password changed successfully");
-					} else {
-						resultMap.put("result", "Invalid Credentials ");
-					}
-
-				} else {
-					resultMap.put("result", "Invalid Credentials ");
-				}
-			} catch (Exception e) {
-				logger.error("Unexpected error occured", e);
-				throw new GraphQLException("Unexpected execution error", e);
+			// Extract vars from graphql query
+			String clinicianEmail = PatUtils.getUserIdFromJWT((String) environment.getArgument(JWT_GRAPHQL_QUERY_PARAM));
+			String currentClinicianPassword = environment.getArgument("clinician_current_password");
+			String newClinicianPassword = environment.getArgument("clinician_new_password");
+			
+			// Get existing pw for given clinician
+			Collection<Map<String, String>> sqlResult = PAT_DAO.executeStatement(GET_EXISTING_PASSWORD, new Object[] { clinicianEmail });
+			if (sqlResult.isEmpty()) {
+				logger.error("No rows returned for " + clinicianEmail);
+				resultMap.put("result", "Invalid Credentials ");
+				return resultMap;
 			}
+			
+			// Check supplied old pw matches pw in DB
+			String existingHashedPasswordInDB = sqlResult.iterator().next().get("Password");
+			if (!BCrypt.checkpw(currentClinicianPassword, existingHashedPasswordInDB)) {
+				logger.error("Passwords don't match!");
+				resultMap.put("result", "Invalid Credentials");
+				return resultMap;
+			}
+
+			// set new hashed pw in db for clincian
+			String newClinicianPasswordHashed = BCrypt.hashpw(newClinicianPassword, BCrypt.gensalt());
+			sqlResult = PAT_DAO.executeStatement(CLINICIAN_CHANGE_PASSWORD_PREPARED_SQL_QUERY,
+					new Object[] { newClinicianPasswordHashed, clinicianEmail });
+			resultMap.put("result", "Password changed successfully");
+
 		} catch (Exception ex) {
 			logger.error("Unexpected error occured", ex);
-			resultMap.put("result", ex.getMessage());
+			resultMap.put("result", "Invalid Credentials");
 		}
 		return resultMap;
 	}

@@ -36,6 +36,7 @@ public final class Constants {
 	public static final String DECODED_PATIENT_ID_KEY = "__DECDOED__p_id";
 	
 	public static final byte[] JWT_KEY = "RNS".getBytes();
+	public static final String JWT_GRAPHQL_QUERY_PARAM = "jwt_token";
 	
 	public static final Random RANDOM = new SecureRandom();
 	
