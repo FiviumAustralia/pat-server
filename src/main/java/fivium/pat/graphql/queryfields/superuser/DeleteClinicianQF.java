@@ -23,7 +23,7 @@ import graphql.schema.GraphQLObjectType;
 
 public class DeleteClinicianQF extends PAT_BaseQF {
 
-	private static final String DELETE_CLINICIAN_PREPARED_SQL_QUERY = "DELETE FROM rns_internal.clinicians WHERE Email=?;";
+	private static final String DELETE_CLINICIAN_PREPARED_SQL_QUERY = "DELETE FROM clinicians WHERE Email=?;";
 	private static Log logger = LogFactory.getLog(DeleteClinicianQF.class);
 	
 	@Override

@@ -26,7 +26,7 @@ import graphql.schema.GraphQLObjectType;
 @Deprecated
 public class AddCliniciansQF extends PAT_BaseQF {
 
-	private static final String ADD_CLINICIAN_PREPARED_SQL_QUERY = "INSERT INTO rns_internal.clinicians (Email, Password, Firstname, Lastname, Token, Role) VALUES (?,?,?,?,?,?)";
+	private static final String ADD_CLINICIAN_PREPARED_SQL_QUERY = "INSERT INTO clinicians (Email, Password, Firstname, Lastname, Token, Role) VALUES (?,?,?,?,?,?)";
 	
 	private static Log logger = LogFactory.getLog(AddCliniciansQF.class);
 	
