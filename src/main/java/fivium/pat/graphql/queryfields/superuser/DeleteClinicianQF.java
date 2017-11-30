@@ -23,7 +23,7 @@ import graphql.schema.GraphQLObjectType;
 
 public class DeleteClinicianQF extends PAT_BaseQF {
 
-	private static final String DELETE_CLINICIAN_PREPARED_SQL_QUERY = "DELETE FROM rns_internal.clinicians WHERE Email=?;";
+	private static final String DELETE_CLINICIAN_PREPARED_SQL_QUERY = "DELETE FROM clinicians WHERE Email=?;";
 	private static Log logger = LogFactory.getLog(DeleteClinicianQF.class);
 	
 	@Override
@@ -56,8 +56,10 @@ public class DeleteClinicianQF extends PAT_BaseQF {
 				sqlResult = PAT_DAO.executeStatement(DELETE_CLINICIAN_PREPARED_SQL_QUERY, queryArgs);
 				if(sqlResult.isEmpty()){
 					resultMap.put("result", "Clinician deleted successfully");
+				} else {
+					resultMap.put("result", "Unable to delete clinician");
 				}
-			}	catch (Exception e) {
+			} catch (Exception e) {
 				logger.error("Unexpected error occured", e);
 				throw new GraphQLException("Unexpected execution error", e);
 			}

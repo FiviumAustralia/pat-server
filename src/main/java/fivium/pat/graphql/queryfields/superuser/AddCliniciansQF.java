@@ -23,10 +23,9 @@ import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.GraphQLArgument;
 import graphql.schema.GraphQLObjectType;
 
-@Deprecated
 public class AddCliniciansQF extends PAT_BaseQF {
 
-	private static final String ADD_CLINICIAN_PREPARED_SQL_QUERY = "INSERT INTO rns_internal.clinicians (Email, Password, Firstname, Lastname, Token, Role) VALUES (?,?,?,?,?,?)";
+	private static final String ADD_CLINICIAN_PREPARED_SQL_QUERY = "INSERT INTO clinicians (Email, Password, Firstname, Lastname, Token, Role) VALUES (?,?,?,?,?,?)";
 	
 	private static Log logger = LogFactory.getLog(AddCliniciansQF.class);
 	
@@ -71,10 +70,10 @@ public class AddCliniciansQF extends PAT_BaseQF {
 				if(sqlResult.isEmpty()){
 					resultMap.put("result", "Clinician added successfully");
 				}
-			} catch(SQLIntegrityConstraintViolationException ex) {
-				logger.error("ID already exists", ex);
-				resultMap.put("result", "ID already exists");
-			}	catch (Exception e) {
+				else {
+					resultMap.put("result", "ID already exists");
+				}
+			} catch (Exception e) {
 				logger.error("Unexpected execution error", e);
 				throw new GraphQLException("Unexpected execution error", e);
 			}

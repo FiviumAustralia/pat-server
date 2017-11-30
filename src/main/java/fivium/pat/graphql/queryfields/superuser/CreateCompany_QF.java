@@ -33,9 +33,7 @@ public class CreateCompany_QF extends PAT_BaseQF {
 	// Input arguments
 	@Override
 	protected List<GraphQLArgument> defineArguments() {
-		return Arrays.asList(new GraphQLArgument("user", Scalars.GraphQLString),
-				new GraphQLArgument("password", Scalars.GraphQLString),
-				new GraphQLArgument("company_name", Scalars.GraphQLString),
+		return Arrays.asList(new GraphQLArgument("company_name", Scalars.GraphQLString),
 				new GraphQLArgument("terms_and_conditions", Scalars.GraphQLString),
 				new GraphQLArgument("permissions", Scalars.GraphQLString),
 				new GraphQLArgument("category", Scalars.GraphQLString));
