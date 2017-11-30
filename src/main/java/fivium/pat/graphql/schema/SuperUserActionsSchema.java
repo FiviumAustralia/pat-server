@@ -30,36 +30,33 @@ public class SuperUserActionsSchema {
 
 	private SuperUserActionsSchema() {
 
+		AddCliniciansQF addClincianQF = new AddCliniciansQF();
 		CreateCompany_QF createCompany_QF = new CreateCompany_QF();
 	    DeleteClinicianQF deleteClinician = new DeleteClinicianQF();
 	    ListCliniciansQF listCliniciansQF = new ListCliniciansQF();
-	    AddCliniciansQF addClincianQF = new AddCliniciansQF();
 
 		GraphQLObjectType rootObjectType = newObject().name("userQueries")
-				.field(newFieldDefinition().type(createCompany_QF.getField()).name("CreateCompany")
-						.dataFetcher(createCompany_QF).argument(createCompany_QF.getArguments()))
-				
 	            .field(newFieldDefinition()
 	                    .type(addClincianQF.getField())
 	                    .name("AddClinician")
 	                    .dataFetcher(addClincianQF)
-	                    .argument(addClincianQF.getArguments())
-	            )
+	                    .argument(addClincianQF.getArguments()))
+	            .field(newFieldDefinition()
+	            		.type(createCompany_QF.getField())
+	            		.name("CreateCompany")
+	            		.dataFetcher(createCompany_QF)
+	            		.argument(createCompany_QF.getArguments()))				
 	            .field(newFieldDefinition()
 	                    .type(deleteClinician.getField())
 	                    .name("DeleteClinician")
 	                    .dataFetcher(deleteClinician)
-	                    .argument(deleteClinician.getArguments())
-	            )
+	                    .argument(deleteClinician.getArguments()))
 	            .field(newFieldDefinition()
 	                    .type(new GraphQLList(listCliniciansQF.getField()))
 	                    .name("ListClinicians")
 	                    .dataFetcher(listCliniciansQF)
-	                    .argument(listCliniciansQF.getArguments())
-	            )
-				
+	                    .argument(listCliniciansQF.getArguments()))
 				.build();
-
 		superUserActionsSchema = new GraphQLSchema(rootObjectType);
 	}
 
