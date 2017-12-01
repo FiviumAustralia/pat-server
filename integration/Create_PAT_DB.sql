@@ -86,20 +86,11 @@ CREATE TABLE IF NOT EXISTS `internaluser` (
 -- Dumping structure for table pat.notifications
 DROP TABLE IF EXISTS `notifications`;
 CREATE TABLE IF NOT EXISTS `notifications` (
-  `p_id` varchar(50) NOT NULL,
-  `notification_date` date DEFAULT NULL,
+  `study_id` varchar(50) NOT NULL,
+  `date` date DEFAULT NULL,
   `notification_text` varchar(50) DEFAULT NULL,
   `delivery_status` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`p_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- Data exporting was unselected.
--- Dumping structure for table pat.notifications_deprecated
-DROP TABLE IF EXISTS `notifications_deprecated`;
-CREATE TABLE IF NOT EXISTS `notifications_deprecated` (
-  `study_id` varchar(100) NOT NULL,
-  `date` varchar(100) NOT NULL,
-  `notification_type` varchar(100) NOT NULL
+  PRIMARY KEY (`study_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.

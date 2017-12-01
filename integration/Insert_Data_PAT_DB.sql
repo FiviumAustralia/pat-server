@@ -16,31 +16,12 @@
 CREATE DATABASE IF NOT EXISTS `pat` /*!40100 DEFAULT CHARACTER SET latin1 */;
 USE `pat`;
 
--- Dumping structure for table pat.company
-CREATE TABLE IF NOT EXISTS `company` (
-  `Company_Name` varchar(50) NOT NULL,
-  `Terms_and_Conditions` varchar(5000) NOT NULL,
-  `Permissions` varchar(50) NOT NULL,
-  `Category` varchar(50) NOT NULL,
-  PRIMARY KEY (`Company_Name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
 -- Dumping data for table pat.company: ~2 rows (approximately)
 /*!40000 ALTER TABLE `company` DISABLE KEYS */;
 INSERT INTO `company` (`Company_Name`, `Terms_and_Conditions`, `Permissions`, `Category`) VALUES
 	('ABC', 'General Site Usage\r\n\r\nLast Revised: December 16, 2013\r\n\r\nWelcome to www.lorem-ipsum.info. This site is provided as a service to our visitors and may be used for informational purposes only. Because the Terms and Conditions contain legal obligations, please read them carefully.\r\n\r\n1. YOUR AGREEMENT\r\n\r\nBy using this Site, you agree to be bound by, and to comply with, these Terms and Conditions. If you do not agree to these Terms and Conditions, please do not use this site.\r\n\r\nPLEASE NOTE: We reserve the right, at our sole discretion, to change, modify or otherwise alter these Terms and Conditions at any time. Unless otherwise indicated, amendments will become effective immediately. Please review these Terms and Conditions periodically. Your continued use of the Site following the posting of changes and/or modifications will constitute your acceptance of the revised Terms and Conditions and the reasonableness of these standards for notice of changes. For your information, this page was last updated as of the date at the top of these terms and conditions.\r\n2. PRIVACY\r\n\r\nPlease review our Privacy Policy, which also governs your visit to this Site, to understand our practices.\r\n\r\n3. LINKED SITES\r\n\r\nThis Site may contain links to other independent third-party Web sites ("Linked Sites”). These Linked Sites are provided solely as a convenience to our visitors. Such Linked Sites are not under our control, and we are not responsible for and does not endorse the content of such Linked Sites, including any information or materials contained on such Linked Sites. You will need to make your own independent judgment regarding your interaction with these Linked Sites.\r\n\r\n4. FORWARD LOOKING STATEMENTS\r\n\r\nAll materials reproduced on this site speak as of the original date of publication or filing. The fact that a document is available on this site does not mean that the information contained in such document has not been modified or superseded by events or by a subsequent document or filing. We have no duty or policy to update any information or statements contained on this site and, therefore, such information or statements should not be relied upon as being current as of the date you access this site.\r\n\r\n5. DISCLAIMER OF WARRANTIES AND LIMITATION OF LIABILITY\r\n\r\nA. THIS SITE MAY CONTAIN INACCURACIES AND TYPOGRAPHICAL ERRORS. WE DOES NOT WARRANT THE ACCURACY OR COMPLETENESS OF THE MATERIALS OR THE RELIABILITY OF ANY ADVICE, OPINION, STATEMENT OR OTHER INFORMATION DISPLAYED OR DISTRIBUTED THROUGH THE SITE. YOU EXPRESSLY UNDERSTAND AND AGREE THAT: (i) YOUR USE OF THE SITE, INCLUDING ANY RELIANCE ON ANY SUCH OPINION, ADVICE, STATEMENT, MEMORANDUM, OR INFORMATION CONTAINED HEREIN, SHALL BE AT YOUR SOLE RISK; (ii) THE SITE IS PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS; (iii) EXCEPT AS EXPRESSLY PROVIDED HEREIN WE DISCLAIM ALL WARRANTIES OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, WORKMANLIKE EFFORT, TITLE AND NON-INFRINGEMENT; (iv) WE MAKE NO WARRANTY WITH RESPECT TO THE RESULTS THAT MAY BE OBTAINED FROM THIS SITE, THE PRODUCTS OR SERVICES ADVERTISED OR OFFERED OR MERCHANTS INVOLVED; (v) ANY MATERIAL DOWNLOADED OR OTHERWISE OBTAINED THROUGH THE USE OF THE SITE IS DONE AT YOUR OWN DISCRETION AND RISK; and (vi) YOU WILL BE SOLELY RESPONSIBLE FOR ANY DAMAGE TO YOUR COMPUTER SYSTEM OR FOR ANY LOSS OF DATA THAT RESULTS FROM THE DOWNLOAD OF ANY SUCH MATERIAL.\r\n\r\nB. YOU UNDERSTAND AND AGREE THAT UNDER NO CIRCUMSTANCES, INCLUDING, BUT NOT LIMITED TO, NEGLIGENCE, SHALL WE BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, PUNITIVE OR CONSEQUENTIAL DAMAGES THAT RESULT FROM THE USE OF, OR THE INABILITY TO USE, ANY OF OUR SITES OR MATERIALS OR FUNCTIONS ON ANY SUCH SITE, EVEN IF WE HAVE BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. THE FOREGOING LIMITATIONS SHALL APPLY NOTWITHSTANDING ANY FAILURE OF ESSENTIAL PURPOSE OF ANY LIMITED REMEDY.\r\n\r\n6. EXCLUSIONS AND LIMITATIONS\r\n\r\nSOME JURISDICTIONS DO NOT ALLOW THE EXCLUSION OF CERTAIN WARRANTIES OR THE LIMITATION OR EXCLUSION OF LIABILITY FOR INCIDENTAL OR CONSEQUENTIAL DAMAGES. ACCORDINGLY, OUR LIABILITY IN SUCH JURISDICTION SHALL BE LIMITED TO THE MAXIMUM EXTENT PERMITTED BY LAW.\r\n\r\n7. OUR PROPRIETARY RIGHTS\r\n\r\nThis Site and all its Contents are intended solely for personal, non-commercial use. Except as expressly provided, nothing within the Site shall be construed as conferring any license under our or any third party\'s intellectual property rights, whether by estoppel, implication, waiver, or otherwise. Without limiting the generality of the foregoing, you acknowledge and agree that all content available through and used to operate the Site and its services is protected by copyright, trademark, patent, or other proprietary rights. You agree not to: (a) modify, alter, or deface any of the trademarks, service marks, trade dress (collectively "Trademarks") o', 'sleep activity profile settings location', 'C'),
 	('XYZ', 'fyufyf', 'sleep', 'C');
 /*!40000 ALTER TABLE `company` ENABLE KEYS */;
-
--- Dumping structure for table pat.fitness_data
-CREATE TABLE IF NOT EXISTS `fitness_data` (
-  `p_id` varchar(50) DEFAULT NULL,
-  `data` varchar(50000) DEFAULT 'NULL',
-  `date` date DEFAULT NULL,
-  `last_sync_date` date DEFAULT NULL,
-  UNIQUE KEY `fitness_data_p_id_date_pk` (`p_id`,`date`),
-  CONSTRAINT `fitness_data_patient_p_id_fk` FOREIGN KEY (`p_id`) REFERENCES `patient` (`p_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Dumping data for table pat.fitness_data: ~15 rows (approximately)
 /*!40000 ALTER TABLE `fitness_data` DISABLE KEYS */;
@@ -62,49 +43,18 @@ INSERT INTO `fitness_data` (`p_id`, `data`, `date`, `last_sync_date`) VALUES
 	('37', '{"pId":"37","activityDate":"2017-11-09","dailyStepData":{"dateTime":"2017-11-09","value":1447},"deviceData":[{"battery":"Medium","deviceVersion":"Charge 2","id":"492186654","lastSyncTime":"2017-11-09T08:39:58.000","mac":"20471254F2F6","type":"TRACKER","features":[]}],"lastSyncDate":"2017-11-09"}', '2017-11-09', '2017-11-08');
 /*!40000 ALTER TABLE `fitness_data` ENABLE KEYS */;
 
--- Dumping structure for table pat.internaluser
-CREATE TABLE IF NOT EXISTS `internaluser` (
-  `User` varchar(50) DEFAULT NULL,
-  `Password` varchar(100) DEFAULT NULL,
-  `Salt` varchar(100) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
 -- Dumping data for table pat.internaluser: ~1 rows (approximately)
 /*!40000 ALTER TABLE `internaluser` DISABLE KEYS */;
 INSERT INTO `internaluser` (`User`, `Password`, `Salt`) VALUES
 	('superuser', '[¡ÍçÎ#Ä¯îIÉ.§Vë¹h²úÿõ·+·Ö×Åkj', 'T½PÅ?A7ýõ?Æ<ýë');
 /*!40000 ALTER TABLE `internaluser` ENABLE KEYS */;
 
--- Dumping structure for table pat.notifications
-CREATE TABLE IF NOT EXISTS `notifications` (
-  `p_id` varchar(50) NOT NULL,
-  `notification_date` date NOT NULL,
-  `notification_text` varchar(50) NOT NULL,
-  `delivery_status` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`p_id`,`notification_text`),
-  CONSTRAINT `notifications_patient_p_id_fk` FOREIGN KEY (`p_id`) REFERENCES `patient` (`p_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
 -- Dumping data for table pat.notifications: ~2 rows (approximately)
 /*!40000 ALTER TABLE `notifications` DISABLE KEYS */;
-INSERT INTO `notifications` (`p_id`, `notification_date`, `notification_text`, `delivery_status`) VALUES
+INSERT INTO `notifications` (`study_id`, `date`, `notification_text`, `delivery_status`) VALUES
 	('1', '2017-11-06', 'Please charge your Fitbit', 'false'),
 	('2', '2017-11-09', 'Please sync with Fitbit', 'false');
 /*!40000 ALTER TABLE `notifications` ENABLE KEYS */;
-
--- Dumping structure for table pat.patient
-CREATE TABLE IF NOT EXISTS `patient` (
-  `p_id` varchar(50) NOT NULL,
-  `Token` varchar(500) NOT NULL,
-  `provider_user_id` varchar(50) DEFAULT NULL,
-  `provider_refresh_token` varchar(500) DEFAULT NULL,
-  `provider_permissions` varchar(500) DEFAULT NULL,
-  `provider` varchar(50) DEFAULT NULL,
-  `Active` varchar(50) NOT NULL,
-  `Company` varchar(50) NOT NULL,
-  `firebase_device_token` varchar(500) DEFAULT NULL,
-  PRIMARY KEY (`p_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Dumping data for table pat.patient: ~53 rows (approximately)
 /*!40000 ALTER TABLE `patient` DISABLE KEYS */;
@@ -164,15 +114,6 @@ INSERT INTO `patient` (`p_id`, `Token`, `provider_user_id`, `provider_refresh_to
 	('9', '', '', '', '', '', 'Not Active', 'ABC', NULL);
 /*!40000 ALTER TABLE `patient` ENABLE KEYS */;
 
--- Dumping structure for table pat.rss_feeds
-CREATE TABLE IF NOT EXISTS `rss_feeds` (
-  `feed_id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(200) NOT NULL,
-  `url` varchar(2000) NOT NULL,
-  `color` varchar(20) NOT NULL,
-  PRIMARY KEY (`feed_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
-
 -- Dumping data for table pat.rss_feeds: ~9 rows (approximately)
 /*!40000 ALTER TABLE `rss_feeds` DISABLE KEYS */;
 INSERT INTO `rss_feeds` (`feed_id`, `title`, `url`, `color`) VALUES
@@ -197,3 +138,64 @@ INSERT INTO `clinicians` (`Email`, `Password`, `Firstname`, `Lastname`, `Token`,
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (1, 'Sofia', 'MacBrearty', '4118095661', '1961-06-08', '735-160-6264', '87 Stang Crossing', 'Friend', 'Lari', 'Glencros', '177-104-6263');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (2, 'Liesa', 'Berkeley', '2212569556', '1956-05-09', '979-242-2015', '8 Kensington Way', 'Brother', 'Brockie', 'Killelea', '651-986-2646');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (3, 'Mariel', 'Narraway', '8299066050', '1973-10-21', '159-225-6966', '2 Acker Trail', 'Friend', 'Betsey', 'Hackford', '592-170-4190');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (4, 'Karlik', 'Fauning', '8173794707', '1968-02-27', '833-108-5294', '4 Mayfield Hill', 'Wife', 'Vittorio', 'Nozzolii', '316-535-4317');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (5, 'Dorine', 'Caroli', '2729006834', '1921-11-08', '783-340-8909', '85610 Old Shore Drive', 'Brother', 'Adria', 'Halmkin', '792-948-0017');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (6, 'Gennifer', 'Jedryka', '1874290865', '1992-01-06', '795-387-7320', '596 Westend Way', 'Brother', 'Saul', 'Gothrup', '489-698-0497');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (7, 'Etienne', 'Ackermann', '1140117084', '1966-02-18', '675-711-9736', '5530 Briar Crest Trail', 'Brother', 'Jozef', 'Targett', '121-794-1404');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (8, 'Micki', 'Eckery', '4619806366', '1951-12-12', '282-984-3195', '8999 Hagan Pass', 'Brother', 'Sarina', 'Starford', '457-714-7834');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (9, 'Christos', 'Keig', '0024638242', '1937-03-18', '157-727-5045', '3763 Schlimgen Crossing', 'Friend', 'Cazzie', 'Livsey', '686-555-7163');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (10, 'Greg', 'Sharrem', '5738051483', '2016-12-05', '482-242-8091', '0723 Milwaukee Plaza', 'Friend', 'Gare', 'Roke', '738-737-1016');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (11, 'Vivianna', 'Spragge', '9394123482', '1969-06-26', '725-378-9911', '62 Elgar Circle', 'Wife', 'Kailey', 'Beaze', '168-920-2348');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (12, 'Tamra', 'Tales', '5247771443', '1939-09-09', '593-639-7395', '33 Farmco Place', 'Brother', 'Sherye', 'Garnsey', '148-615-0641');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (13, 'Antin', 'Raymen', '9161913472', '1921-01-29', '263-880-5590', '247 Springs Junction', 'Wife', 'Emmy', 'Vaux', '441-324-0079');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (14, 'Dede', 'Duffan', '4064840275', '1923-11-20', '164-437-1085', '333 Lake View Street', 'Wife', 'Janina', 'Billing', '996-722-7170');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (15, 'Katherine', 'Clohissy', '2007854627', '1923-07-06', '340-145-3008', '605 Parkside Court', 'Friend', 'Marybeth', 'Matuschek', '608-394-3401');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (16, 'Madelle', 'Vickerman', '1953742327', '1932-10-25', '459-908-2930', '615 Gale Plaza', 'Friend', 'Sonnie', 'Stamper', '307-881-3623');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (17, 'Oliver', 'Pryke', '4310629431', '1964-04-10', '195-703-1731', '9033 Cambridge Pass', 'Friend', 'Ginger', 'Brand-Hardy', '316-576-5580');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (18, 'Packston', 'Trevascus', '9193128762', '1983-01-24', '767-373-6932', '2 Carberry Trail', 'Brother', 'Lexi', 'Sedgefield', '296-236-0086');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (19, 'Gustav', 'Stidson', '8883173155', '1973-04-04', '900-791-0923', '71523 Mariners Cove Lane', 'Brother', 'Haily', 'Ferrillo', '744-489-3265');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (20, 'Amalia', 'Meert', '8776347311', '1933-12-09', '743-499-9178', '04 Northview Pass', 'Friend', 'Nadya', 'Zeale', '365-174-4067');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (21, 'Lee', 'Quennell', '6271312829', '1923-06-07', '481-824-0441', '3 Mayer Crossing', 'Friend', 'Lyn', 'Osipov', '340-704-2168');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (22, 'Gusta', 'Purdon', '4667661518', '1988-01-14', '282-101-7057', '0224 Towne Parkway', 'Brother', 'Hastings', 'Zecchinelli', '706-935-7883');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (23, 'Davidson', 'Hayball', '9727157424', '1985-12-23', '373-150-5877', '0 Eggendart Park', 'Friend', 'Auberta', 'Deme', '314-383-3113');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (24, 'Abdul', 'Hobson', '5954447381', '2013-12-19', '116-360-7116', '68 Hovde Way', 'Wife', 'Lilith', 'Duffil', '212-194-6845');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (25, 'Robinet', 'Keir', '4803317380', '2002-04-07', '924-773-6991', '80539 Cherokee Street', 'Brother', 'Ursula', 'McCaghan', '190-207-7467');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (26, 'Arny', 'Stoakes', '3039546546', '1973-06-12', '695-504-7581', '00 Mayer Lane', 'Wife', 'Rosco', 'Handslip', '652-550-2443');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (27, 'Marissa', 'Walley', '6924939260', '1956-02-20', '817-898-2683', '87792 Oak Point', 'Brother', 'Neils', 'Bellis', '327-702-4784');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (28, 'Gerrilee', 'Tunder', '2738701604', '1987-12-05', '628-409-0808', '38413 Mendota Plaza', 'Friend', 'Cristi', 'de Tocqueville', '994-367-2244');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (29, 'Katharine', 'Cocker', '3599102872', '1960-09-11', '619-364-0087', '61 Veith Avenue', 'Brother', 'Liv', 'Mordon', '643-822-7916');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (30, 'Farrell', 'Ducker', '4211601768', '1990-03-22', '255-634-0831', '88141 Bunker Hill Road', 'Wife', 'Kamillah', 'Riddle', '319-701-1355');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (31, 'Reggie', 'Golley', '0412987538', '1932-01-02', '497-306-7342', '5229 Eastlawn Point', 'Wife', 'Arline', 'Theseira', '959-777-2350');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (32, 'Marj', 'Jacks', '5304301501', '1926-09-14', '832-562-9149', '2336 Anhalt Drive', 'Wife', 'Avrom', 'Cornelleau', '993-578-3096');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (33, 'Bren', 'Belk', '4934669604', '2006-10-02', '423-242-3688', '01031 Sundown Road', 'Friend', 'Carmina', 'Tripean', '129-532-8414');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (34, 'Allen', 'Schoffler', '0154751766', '1994-01-15', '140-117-6676', '66155 Hooker Center', 'Brother', 'Skip', 'De Carlo', '993-687-2740');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (35, 'Laina', 'Sotheron', '1643633538', '1939-05-22', '849-536-7175', '04 Dryden Road', 'Friend', 'Mayor', 'Littleproud', '199-415-8231');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (36, 'Dyane', 'Mac Giolla Pheadair', '3936026459', '1953-03-15', '239-838-8992', '969 Eliot Court', 'Friend', 'Crin', 'Handover', '975-593-5842');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (37, 'Caro', 'Fredson', '3022088221', '1905-03-18', '427-900-0549', '91 Pawling Drive', 'Friend', 'Rayshell', 'Mapother', '822-829-7266');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (38, 'Prince', 'Clearley', '8421938258', '1924-04-13', '801-290-2121', '7 Monument Drive', 'Wife', 'Gabi', 'Marcq', '237-614-0612');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (39, 'Aksel', 'Lewington', '6811014695', '1963-10-28', '264-725-9207', '5 Oakridge Plaza', 'Wife', 'Dexter', 'Ormerod', '827-981-6101');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (40, 'Duff', 'Ibbison', '2823523472', '1957-03-10', '749-712-5783', '47 Bartillon Parkway', 'Friend', 'Karel', 'Martinello', '777-721-1356');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (41, 'Matty', 'Eighteen', '2443537358', '1978-01-09', '599-874-7183', '1 Milwaukee Lane', 'Brother', 'Isidore', 'Pryke', '852-879-4024');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (42, 'Bettine', 'Masi', '1791546617', '1975-10-29', '734-317-1463', '192 Nelson Junction', 'Wife', 'Kriste', 'Eouzan', '139-748-6325');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (43, 'Powell', 'Barnwille', '5677088366', '1910-04-15', '105-714-4408', '75765 Quincy Park', 'Brother', 'Evy', 'Ivanishin', '486-995-1682');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (44, 'Loydie', 'Larrad', '9357219455', '1967-12-19', '789-772-3801', '50436 Cambridge Alley', 'Brother', 'Brigham', 'Kilban', '349-742-7953');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (45, 'Lombard', 'Meakes', '9938264492', '1926-06-19', '858-321-9070', '1 Chinook Avenue', 'Wife', 'Paula', 'Washbrook', '604-809-0519');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (46, 'Elisha', 'Vescovini', '3617339883', '2013-03-22', '937-790-6359', '8 8th Hill', 'Brother', 'Quintina', 'Goscomb', '515-380-5017');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (47, 'Audrey', 'Tasch', '4019443645', '1945-10-20', '370-936-8356', '00654 School Plaza', 'Brother', 'Karlotta', 'Kumar', '779-748-9962');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (48, 'Clifford', 'Budleigh', '7570526236', '1924-09-26', '498-756-6450', '31 Graceland Pass', 'Brother', 'Maura', 'Gaiger', '593-459-7768');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (49, 'Lurline', 'Thrift', '6601804525', '1927-03-10', '342-602-3961', '59552 Dexter Court', 'Friend', 'Theresa', 'Antoniak', '228-736-7286');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (50, 'Filippa', 'Sasser', '0974205729', '2011-03-02', '119-146-5425', '512 Forest Dale Avenue', 'Wife', 'Huntley', 'Gollop', '255-700-9197');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (51, 'Morgan', 'Tighe', '7003248271', '1928-10-25', '880-468-9827', '74 Melrose Hill', 'Friend', 'Roosevelt', 'Sidebottom', '999-774-1289');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (52, 'Reilly', 'Walthall', '8765682661', '2004-01-07', '468-429-9189', '5 Fairview Place', 'Friend', 'Meghann', 'Spreckley', '324-165-0864');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (53, 'Wilfred', 'Redbourn', '6396862050', '1991-07-17', '453-127-9665', '7 Waubesa Alley', 'Wife', 'Brendan', 'Glowacz', '998-361-6010');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (54, 'Ephrem', 'Gribbin', '3546261690', '1976-09-20', '664-444-3643', '2 Rowland Court', 'Friend', 'Ian', 'Barthelemy', '957-589-9175');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (55, 'Adiana', 'Leavens', '6575218385', '2001-01-30', '555-689-4621', '6324 Rowland Alley', 'Friend', 'Boy', 'Whiten', '290-434-6822');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (56, 'Quillan', 'Carreck', '6058842832', '2017-03-03', '120-194-8142', '1 Hintze Point', 'Friend', 'Muriel', 'Puleston', '109-223-2246');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (57, 'Orelie', 'Glas', '9343772173', '1915-04-26', '439-432-5460', '6 Dennis Crossing', 'Brother', 'Kimberlyn', 'Pickston', '433-448-7189');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (58, 'Martin', 'Frowd', '1282385569', '1928-04-04', '204-499-1642', '91897 Saint Paul Trail', 'Brother', 'Horatius', 'Kinleyside', '358-861-9494');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (59, 'Winnah', 'Boobier', '5037899710', '1995-10-29', '981-352-0199', '559 Bowman Crossing', 'Wife', 'Aviva', 'Ponte', '251-993-4976');
+insert into patient_details (study_id, first_name, last_name, mrn, dob, contact, address, next_of_kin_relationship, next_of_kin_first_name, next_of_kin_last_name, next_of_kin_contact_number) values (60, 'Rivkah', 'Verbrugghen', '5284747941', '1976-05-12', '972-658-7993', '8317 Ridge Oak Parkway', 'Brother', 'Scottie', 'Androck', '493-445-5112');
