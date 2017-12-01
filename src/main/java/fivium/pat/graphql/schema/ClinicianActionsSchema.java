@@ -5,15 +5,12 @@ import static graphql.schema.GraphQLObjectType.newObject;
 
 import fivium.pat.graphql.queryfields.clinician.AddNewRSS_FeedQF;
 import fivium.pat.graphql.queryfields.clinician.AddPatientQF;
-import fivium.pat.graphql.queryfields.clinician.AuthenticateClinicianWithGoogleQF;
 import fivium.pat.graphql.queryfields.clinician.CliniciansChangePasswordQF;
 import fivium.pat.graphql.queryfields.clinician.EditPatientQF;
 import fivium.pat.graphql.queryfields.clinician.FetchTrialStartDateQF;
 import fivium.pat.graphql.queryfields.clinician.GenerateCSV_QF;
 import fivium.pat.graphql.queryfields.clinician.GenerateGraphDataQF;
 import fivium.pat.graphql.queryfields.clinician.ListPatientsQF;
-import fivium.pat.graphql.queryfields.superuser.CreateCompany_QF;
-import fivium.pat.graphql.queryfields.superuser.ListCliniciansQF;
 import graphql.schema.GraphQLList;
 import graphql.schema.GraphQLObjectType;
 import graphql.schema.GraphQLSchema;
@@ -39,7 +36,6 @@ public class ClinicianActionsSchema {
 
 		AddNewRSS_FeedQF addNewRssFeedQF = new AddNewRSS_FeedQF();
 		AddPatientQF addPatientQF = new AddPatientQF();
-		AuthenticateClinicianWithGoogleQF authenticateClinicianWithGoogleQF = new AuthenticateClinicianWithGoogleQF();
 		CliniciansChangePasswordQF changePassword = new CliniciansChangePasswordQF();
 		EditPatientQF editPatient = new EditPatientQF();
 		FetchTrialStartDateQF fetchDates = new FetchTrialStartDateQF();
@@ -58,11 +54,6 @@ public class ClinicianActionsSchema {
 	                    .name("AddPatient")
 	                    .dataFetcher(addPatientQF)
 	                    .argument(addPatientQF.getArguments()))
-	            .field(newFieldDefinition()
-	            		.type(authenticateClinicianWithGoogleQF.getField())
-	            		.name("AuthenticateClinicianUsingGoogle")
-	            		.dataFetcher(authenticateClinicianWithGoogleQF)
-	            		.argument(authenticateClinicianWithGoogleQF.getArguments()))
 	            .field(newFieldDefinition()
 	            		.type(changePassword.getField())
 	            		.name("ChangePassword")

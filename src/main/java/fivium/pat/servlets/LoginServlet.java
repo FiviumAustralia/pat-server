@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -26,6 +27,7 @@ public class LoginServlet extends HttpServlet {
 	private static final String ID_PARAM = "id";
 	private static final String PWORD_PARAM = "pwd";
 	private static final String LOGIN_CONTEXT_PARAM = "ctx";
+	private static final String GOOGLE_TOKEN_PARAM = "g_token";
 	
 	private static Log logger = LogFactory.getLog(LoginServlet.class);
 
@@ -45,13 +47,20 @@ public class LoginServlet extends HttpServlet {
 		String loginContext = request.getParameter(LOGIN_CONTEXT_PARAM);
 		String id = request.getParameter(ID_PARAM);
 		String password = request.getParameter(PWORD_PARAM);
+		String googleToken = request.getParameter(GOOGLE_TOKEN_PARAM);
 
 		Map<String, String> loginResult = new HashMap<>();
 
 		if (MOBILE_APP_LOGIN_CONTEXT.equals(loginContext)) {
 			loginResult = PatAuthUtils.loginPatient(id);
 		} else if (CLINICIAN_PORTAL_LOGIN_CONTEXT.equals(loginContext)) {
-			loginResult = PatAuthUtils.loginClinician(id,password);
+			// Login with Email and password
+			if (StringUtils.isBlank(googleToken)) {
+				loginResult = PatAuthUtils.loginClinician(id,password);
+			// Login with google token
+			} else {
+				loginResult = PatAuthUtils.loginClinician(googleToken);
+			}
 		} else {
 			loginResult.put("error", loginContext + " login context is not supported.");
 		}

@@ -3,6 +3,11 @@ package fivium.pat.utils;
 import static fivium.pat.utils.Constants.CLINICIAN_PORTAL_LOGIN_CONTEXT;
 import static fivium.pat.utils.Constants.MOBILE_APP_LOGIN_CONTEXT;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -12,6 +17,10 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.mindrot.jbcrypt.BCrypt;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -42,6 +51,8 @@ public class PatAuthUtils {
 	private static final String PATIENTS_URL_PATTERN = "/PatientServlet";
 	private static final String CLINICIANS_URL_PATTERN = "/ClinicianServlet";
 	private static final String SUPERUSER_URL_PATTERN = "/SuperUserServlet";
+	
+	private static final String GOOGLE_AUTH_VERIFICATION_URL = "https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=";
 
 	private static Log logger = LogFactory.getLog(PatAuthUtils.class);
 
@@ -167,6 +178,76 @@ public class PatAuthUtils {
 		}
 
 		return clinicianLoginResultMap;
+
+	}
+	
+	public static Map<String, String> loginClinician(String googleToken) {
+		
+		logger.trace("Entering loginClinician...");
+		
+		// Initialise result of this method
+		Map<String, String> clinicianLoginResultMap = new HashMap<String, String>();
+		
+		try {
+			Map<String, String> googleAuthResultMap = getGoogleAuthResultMap(googleToken);
+			
+			// verify supplied google token with google
+			if (!Boolean.parseBoolean(googleAuthResultMap.get("email_verified"))) {
+				clinicianLoginResultMap.put("jwt_token", "user is not verified.");
+				return clinicianLoginResultMap;
+			} 
+			
+			// check if Email from google token exists in clinicians table
+			Collection<Map<String, String>> queryResult = PAT_DAO.executeStatement(AUTHENTICATE_CLINICIAN_PREPARED_SQL_QUERY,
+					new Object[] { googleAuthResultMap.get("email") });
+			
+			if (queryResult.isEmpty()) {
+				clinicianLoginResultMap.put("jwt_token", "Invalid Credentials");
+				return clinicianLoginResultMap;
+			} 
+			
+			// Issue a PAT jwt token and store it in the db
+			Map<String, String> queryResultMap = queryResult.iterator().next();
+			String role = queryResultMap.get("Role");
+			String token = PatAuthUtils.issueJwtToken(googleAuthResultMap.get("Email"), CLINICIAN_PORTAL_LOGIN_CONTEXT, role);
+			Object[] queryArgsUpdate = new Object[] { token, googleAuthResultMap.get("Email") };
+			PAT_DAO.executeStatement(AUTHENTICATE_CLINICIAN_PREPARED_SQL_QUERY_UPDATE_TOKEN, queryArgsUpdate);
+			
+			// return the issued pat jwt token
+			clinicianLoginResultMap.put("jwt_token", token);		
+			return clinicianLoginResultMap;
+
+		} catch (Exception e) {
+			logger.error("Unexpected Error Occurred", e);
+		}
+		return clinicianLoginResultMap;
+		
+	}
+	
+	private static Map<String, String> getGoogleAuthResultMap(String googleToken) {
+
+		StringBuilder result = new StringBuilder();
+		Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+		Map<String, String> resultMap = new HashMap<String, String>();
+		URL url;
+		try {
+			url = new URL(GOOGLE_AUTH_VERIFICATION_URL + googleToken);
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setRequestMethod("GET");
+			BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			String line;
+			while ((line = rd.readLine()) != null) {
+				result.append(line);
+			}
+			Type type = new TypeToken<Map<String, String>>() {
+			}.getType();
+			resultMap = gson.fromJson(result.toString(), type);
+			rd.close();
+		}  catch(Exception e) {
+			resultMap.put("email_verified", "false");
+			logger.error("Email not verified ", e);
+		}
+		return resultMap;
 
 	}
 
