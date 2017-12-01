@@ -11,12 +11,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import fivium.pat.graphql.PAT_BaseQF;
 import fivium.pat.utils.PAT_DAO;
-import graphql.GraphQLException;
 import graphql.Scalars;
 import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.GraphQLArgument;
@@ -24,11 +24,11 @@ import graphql.schema.GraphQLObjectType;
 
 public class GenerateCSV_QF extends PAT_BaseQF {
 
-	public static final String BASE_STEPS_FETCH_QUERY = "SELECT x.date, x.study_id, p.mrn, p.first_name, p.last_name, p.dob, x.steps FROM stepdata x INNER JOIN patient p ON x.study_id = p.study_id ";
-	public static final String BASE_WEIGHT_FETCH_QUERY = "SELECT x.date, x.study_id, p.mrn, p.first_name, p.last_name, p.dob, x.weight FROM weightdata x INNER JOIN patient p ON x.study_id = p.study_id ";
-	public static final String BASE_SURVEY_FETCH_QUERY = "SELECT x.date, x.study_id, p.mrn, p.first_name, p.last_name, p.dob, x.survey_data FROM surveydata x INNER JOIN patient p ON x.study_id = p.study_id ";
-	public static final String BASE_NOTIFICATION_FETCH_QUERY = "SELECT x.date, x.study_id, p.mrn, p.first_name, p.last_name, p.dob, x.notification_type FROM notifications x INNER JOIN patient p ON x.study_id = p.study_id ";
-	public static final String BASE_SLEEP_FETCH_QUERY = "SELECT x.date, x.study_id, p.mrn, p.first_name, p.last_name, p.dob, x.duration, x.efficiency FROM sleepdata x INNER JOIN patient p ON x.study_id = p.study_id ";
+	public static final String BASE_STEPS_FETCH_QUERY = "SELECT x.date, x.study_id, p.mrn, p.first_name, p.last_name, p.dob, x.steps FROM stepdata x INNER JOIN patient_details p ON x.study_id = p.study_id ";
+	public static final String BASE_WEIGHT_FETCH_QUERY = "SELECT x.date, x.study_id, p.mrn, p.first_name, p.last_name, p.dob, x.weight FROM weightdata x INNER JOIN patient_details p ON x.study_id = p.study_id ";
+	public static final String BASE_SURVEY_FETCH_QUERY = "SELECT x.date, x.study_id, p.mrn, p.first_name, p.last_name, p.dob, x.survey_data FROM surveydata x INNER JOIN patient_details p ON x.study_id = p.study_id ";
+	public static final String BASE_NOTIFICATION_FETCH_QUERY = "SELECT x.date, x.study_id, p.mrn, p.first_name, p.last_name, p.dob, x.notification_text FROM notifications x INNER JOIN patient_details p ON x.study_id = p.study_id ";
+	public static final String BASE_SLEEP_FETCH_QUERY = "SELECT x.date, x.study_id, p.mrn, p.first_name, p.last_name, p.dob, x.duration, x.efficiency FROM sleepdata x INNER JOIN patient_details p ON x.study_id = p.study_id ";
 
 
 	public static final String CSV_INSERT_QUERY = "INSERT INTO appdata (creation_ts, csv_filename, csv_content) VALUES (NOW(),?,?)";
@@ -61,6 +61,9 @@ public class GenerateCSV_QF extends PAT_BaseQF {
 			    .field(newFieldDefinition()
 			    		.name("csv_content")
 			            .type(GraphQLString))
+			    .field(newFieldDefinition()
+			    		.name("result")
+			    		.type(GraphQLString))
 			   .build();
 	}
 
@@ -79,59 +82,68 @@ public class GenerateCSV_QF extends PAT_BaseQF {
 	@Override
 	protected Object fetchData(DataFetchingEnvironment environment) {
 
-		String reportType = environment.getArgument("report_type");
-		Collection<Map<String, String>> sqlResult = null;
-
-		if (reportType.equals("steps")) {
-			sqlResult = fetchCSV_Data(BASE_STEPS_FETCH_QUERY, environment.getArguments());
-		} else if (reportType.equals("weight")) {
-			sqlResult = fetchCSV_Data(BASE_WEIGHT_FETCH_QUERY, environment.getArguments());
-		} else if (reportType.equals("survey")) {
-			sqlResult = fetchCSV_Data(BASE_SURVEY_FETCH_QUERY, environment.getArguments());
-		} else if (reportType.equals("notifications")) {
-			sqlResult = fetchCSV_Data(BASE_NOTIFICATION_FETCH_QUERY, environment.getArguments());
-		}else if (reportType.equals("sleep")) {
-			sqlResult = fetchCSV_Data(BASE_SLEEP_FETCH_QUERY, environment.getArguments());
-		}else {
-			throw new GraphQLException("Unexpected report_type parameter: " + reportType + ". report_type needs to be 'steps', 'weight', 'sleep', 'notifications' or 'survey'");
-		}
-
-		// build the CSV file
-		String csvFileContent = buildCSV_file(reportType, sqlResult);
-		// push the CSV file to the database
-		String reportName = pushCSV_File(environment.getArguments(), csvFileContent);
-
 		Map<String, String> resultMap = new HashMap<String, String>();
-		resultMap.put("csv_filename", reportName);
-		resultMap.put("csv_content", csvFileContent);
+		
+		try {
+			
+			String reportType = environment.getArgument("report_type");
+			Collection<Map<String, String>> sqlResult = null;
 
-		logger.debug("Generated CSV:\n\n" + csvFileContent);
+			if (reportType.equals("steps")) {
+				sqlResult = fetchCSV_Data(BASE_STEPS_FETCH_QUERY, environment.getArguments());
+			} else if (reportType.equals("weight")) {
+				sqlResult = fetchCSV_Data(BASE_WEIGHT_FETCH_QUERY, environment.getArguments());
+			} else if (reportType.equals("survey")) {
+				sqlResult = fetchCSV_Data(BASE_SURVEY_FETCH_QUERY, environment.getArguments());
+			} else if (reportType.equals("notifications")) {
+				sqlResult = fetchCSV_Data(BASE_NOTIFICATION_FETCH_QUERY, environment.getArguments());
+			} else if (reportType.equals("sleep")) {
+				sqlResult = fetchCSV_Data(BASE_SLEEP_FETCH_QUERY, environment.getArguments());
+			} else {
+				resultMap.put("result", "Unexpected report_type parameter: " + reportType + ". report_type needs to be 'steps', 'weight', 'sleep', 'notifications' or 'survey'");
+				return resultMap;
+			}
+
+			// build the CSV file
+			String csvFileContent = buildCSV_file(reportType, sqlResult);
+			// push the CSV file to the database
+			String reportName = pushCSV_File(environment.getArguments(), csvFileContent);
+
+			resultMap.put("csv_filename", reportName);
+			resultMap.put("csv_content", csvFileContent);
+			resultMap.put("result", "Sucesfully generated CSV");
+
+			logger.debug("Generated CSV:\n\n" + csvFileContent);
+		} catch (Exception e) {
+			logger.error("Unexpected error generating CSV", e);
+			resultMap.put("result", "Error occured generating CSV");
+		}
 
 		return resultMap;
 
 	}
 
-	private Collection<Map<String, String>> fetchCSV_Data (String baseQuery, Map<String, Object> params) {
+	private Collection<Map<String, String>> fetchCSV_Data (String baseQuery, Map<String, Object> params) throws Exception {
 
 		String finalQuery = baseQuery + WHERE_CLAUSE_STARTER;
 
 		List<String> queryArgs = new ArrayList<String>();
 
-		if (params.get("date_from") != null && params.get("date_to") != null ) {
+		if (notBlank( params.get("date_from")) && notBlank( params.get("date_to")) ) {
 			finalQuery += DATE_RANGE_QUERY_FILTER;
 			queryArgs.add((String) params.get("date_from"));
 			queryArgs.add((String) params.get("date_to"));
-		} else if (params.get("date_exact") != null) {
+		} else if (notBlank( params.get("date_exact"))) {
 			finalQuery += EXACT_DATE_QUERY_FILTER;
 			queryArgs.add((String) params.get("date_exact"));
 		}
 
-		if (params.get("study_id") != null ) {
+		if (notBlank( params.get("study_id"))) {
 			finalQuery += STUDY_ID_QUERY_FILTER;
 			queryArgs.add((String) params.get("study_id"));
 		}
 
-		if (params.get("mrn") != null ) {
+		if (notBlank( params.get("mrn"))) {
 			finalQuery += MRN_QUERY_FILTER;
 			queryArgs.add((String) params.get("mrn"));
 		}
@@ -139,12 +151,7 @@ public class GenerateCSV_QF extends PAT_BaseQF {
 		finalQuery += ORDER_BY_CLAUSE;
 
 		logger.debug("executing CSV generation query: " + finalQuery);
-		try {
-			return PAT_DAO.executeStatement(finalQuery, queryArgs.toArray());
-		} catch (Exception e) {
-			logger.error("Unexpected error occured", e);
-			throw new GraphQLException("Unexpected execution error", e);
-		}
+		return PAT_DAO.executeStatement(finalQuery, queryArgs.toArray());
 
 	}
 
@@ -158,7 +165,7 @@ public class GenerateCSV_QF extends PAT_BaseQF {
 			csvContent.append(WEIGHT_CSV_HEADER);
 		} else if (reportType.equals("sleep")) {
 			csvContent.append(SLEEP_CSV_HEADER);
-		}else if (reportType.equals("survey")) {
+		} else if (reportType.equals("survey")) {
 			csvContent.append(SURVEY_CSV_HEADER);
 		} else if (reportType.equals("notifications")) {
 			csvContent.append(NOTIFICATION_CSV_HEADER);
@@ -182,7 +189,7 @@ public class GenerateCSV_QF extends PAT_BaseQF {
 		return csvContent.toString();
 	}
 
-	private String pushCSV_File(Map<String, Object> params, String csvContent) {
+	private String pushCSV_File(Map<String, Object> params, String csvContent) throws Exception {
 
 		String reportType = (String) params.get("report_type");
 
@@ -201,17 +208,17 @@ public class GenerateCSV_QF extends PAT_BaseQF {
 		}
 
 
-		if (params.get("date_from") != null && params.get("date_to") != null ) {
+		if (notBlank( params.get("date_from")) && notBlank( params.get("date_to"))) {
 			reportName.append("__" + (String) params.get("date_from") + "_" + (String) params.get("date_to") );
-		} else if (params.get("date_exact") != null) {
+		} else if (notBlank( params.get("date_exact"))) {
 			reportName.append("__" + (String) params.get("date_exact"));
 		}
 
-		if (params.get("study_id") != null ) {
+		if (notBlank( params.get("study_id"))) {
 			reportName.append("__study_id=" + (String) params.get("study_id"));
 		}
 
-		if (params.get("mrn") != null ) {
+		if (notBlank( params.get("mrn"))) {
 			reportName.append("__mrn=" + (String) params.get("mrn"));
 		}
 
@@ -220,15 +227,15 @@ public class GenerateCSV_QF extends PAT_BaseQF {
 				csvContent
 		};
 
-		try {
-			PAT_DAO.executeStatement(CSV_INSERT_QUERY, queryArgs);
-		} catch (Exception e) {
-			logger.error("Unexpected error occured", e);
-			throw new GraphQLException("Unexpected execution error", e);
-		}
+	    PAT_DAO.executeStatement(CSV_INSERT_QUERY, queryArgs);
 
 		return reportName.toString();
 
+	}
+	
+	//helper method to improve readability 
+	private boolean notBlank(Object str) {
+		return StringUtils.isNotBlank((String) str);
 	}
 
 }
