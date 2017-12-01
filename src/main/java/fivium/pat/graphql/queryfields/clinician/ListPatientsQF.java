@@ -15,6 +15,8 @@ import org.apache.commons.logging.LogFactory;
 
 import fivium.pat.graphql.PAT_BaseQF;
 import fivium.pat.utils.PAT_DAO;
+import graphql.GraphQLException;
+import graphql.GraphqlErrorHelper;
 import graphql.Scalars;
 import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.GraphQLArgument;
@@ -23,23 +25,23 @@ import graphql.schema.GraphQLObjectType;
 public class ListPatientsQF extends PAT_BaseQF {
 
 	private static final String LIST_PATIENTS_PREPARED_SQL_BASE_QUERY  =
-	"SELECT p.*, lateststepsync.last_steps_sync_date, latestweightsync.last_weight_sync_date, latestsurveysync.last_survey_sync_date"+
-	"FROM patient_details p"+
-	"LEFT JOIN"+
-	"(SELECT p_id as study_id, max(date) last_steps_sync_date"+
-	"FROM 	fitness_data"+
-	"GROUP BY p_id) lateststepsync"+
-	"ON p.study_id = lateststepsync.study_id"+
-	"LEFT JOIN"+
-	"(SELECT study_id, max(date) last_weight_sync_date"+
-	"FROM 	weightdata"+
-	"GROUP BY study_id) latestweightsync"+
-	"ON p.study_id = latestweightsync.study_id"+
-	"LEFT JOIN"+
-	"(SELECT study_id, max(date) last_survey_sync_date"+
-	"FROM 	surveydata"+
-	"GROUP BY study_id) latestsurveysync"+
-	"ON p.study_id = latestsurveysync.study_id;";
+	"SELECT p.*, lateststepsync.last_steps_sync_date, latestweightsync.last_weight_sync_date, latestsurveysync.last_survey_sync_date "+
+	"FROM patient_details p "+
+	"LEFT JOIN "+
+	"(SELECT p_id as study_id, max(date) last_steps_sync_date "+
+	"FROM fitness_data "+
+	"GROUP BY p_id) lateststepsync "+
+	"ON p.study_id = lateststepsync.study_id "+
+	"LEFT JOIN "+
+	"(SELECT study_id, max(date) last_weight_sync_date "+
+	"FROM weightdata "+
+	"GROUP BY study_id) latestweightsync "+
+	"ON p.study_id = latestweightsync.study_id "+
+	"LEFT JOIN "+
+	"(SELECT study_id, max(date) last_survey_sync_date "+
+	"FROM surveydata "+
+	"GROUP BY study_id) latestsurveysync "+
+	"ON p.study_id = latestsurveysync.study_id ";
 	
 	private static final String LIST_PATIENT_PREPARED_SQL_WHERE_CLAUSE = " WHERE p.study_id = ?";
 	
@@ -139,13 +141,14 @@ public class ListPatientsQF extends PAT_BaseQF {
 			
 			result = PAT_DAO.executeStatement(sql, queryArgs);
 
+			if (result.isEmpty()) {
+				logger.error("No Patients Found.");
+			}
+			
 		} catch (Exception e) {
 			logger.error("Unexpected error occured", e);
 		}
 
-		if (result.isEmpty()) {
-			logger.error("No Patients Found.");
-		}
 
 		return result;
 	}
