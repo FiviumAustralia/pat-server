@@ -10,7 +10,7 @@ import fivium.pat.graphql.queryfields.clinician.CliniciansChangePasswordQF;
 import fivium.pat.graphql.queryfields.clinician.EditPatientQF;
 import fivium.pat.graphql.queryfields.clinician.FetchTrialStartDateQF;
 import fivium.pat.graphql.queryfields.clinician.GenerateCSV_QF;
-import fivium.pat.graphql.queryfields.clinician.GenerateGraphDataQF;
+import fivium.pat.graphql.queryfields.clinician.GetGraphDataQF;
 import fivium.pat.graphql.queryfields.clinician.ListPatientsQF;
 import fivium.pat.graphql.queryfields.superuser.CreateCompany_QF;
 import fivium.pat.graphql.queryfields.superuser.ListCliniciansQF;
@@ -44,7 +44,7 @@ public class ClinicianActionsSchema {
 		EditPatientQF editPatient = new EditPatientQF();
 		FetchTrialStartDateQF fetchDates = new FetchTrialStartDateQF();
 	    GenerateCSV_QF generateCSV_QF = new GenerateCSV_QF();
-	    GenerateGraphDataQF graphData = new GenerateGraphDataQF();
+	    GetGraphDataQF getGraphData = new GetGraphDataQF();
 	    ListPatientsQF listPatientsQF = new ListPatientsQF();
 
 		GraphQLObjectType rootObjectType = newObject().name("userQueries")				
@@ -84,10 +84,10 @@ public class ClinicianActionsSchema {
 	            		.dataFetcher(generateCSV_QF)
 	            		.argument(generateCSV_QF.getArguments()))
 	            .field(newFieldDefinition()
-	            		.type(graphData.getField() )
-	            		.name("GraphData")
-	            		.dataFetcher(graphData)
-	            		.argument(graphData.getArguments()))
+	            		.type(getGraphData.getField() )
+	            		.name("GetGraphData")
+	            		.dataFetcher(getGraphData)
+	            		.argument(getGraphData.getArguments()))
 	            .field(newFieldDefinition()
 	                    .type(new GraphQLList(listPatientsQF.getField()))
 	                    .name("ListPatients")
