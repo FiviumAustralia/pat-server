@@ -15,7 +15,6 @@ import org.apache.commons.logging.LogFactory;
 
 import fivium.pat.graphql.PAT_BaseQF;
 import fivium.pat.utils.PAT_DAO;
-import graphql.GraphQLException;
 import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.GraphQLArgument;
 import graphql.schema.GraphQLObjectType;
@@ -38,9 +37,7 @@ public class FetchTrialStartDateQF extends PAT_BaseQF {
 
 	@Override
 	protected List<GraphQLArgument> defineArguments() {
-		return Arrays.asList(
-				
-				);
+		return Arrays.asList();
 	}
 
 	@Override
@@ -54,7 +51,7 @@ public class FetchTrialStartDateQF extends PAT_BaseQF {
 				}
 			}	catch (Exception e) {
 				logger.error("Unexpected error occured", e);
-				throw new GraphQLException("Unexpected execution error", e);
+				resultMap.put("result", "Error fetching start date");
 			}
 		return resultMap;
 	}
