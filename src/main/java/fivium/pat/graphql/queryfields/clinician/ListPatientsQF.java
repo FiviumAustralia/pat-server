@@ -15,8 +15,6 @@ import org.apache.commons.logging.LogFactory;
 
 import fivium.pat.graphql.PAT_BaseQF;
 import fivium.pat.utils.PAT_DAO;
-import graphql.GraphQLException;
-import graphql.GraphqlErrorHelper;
 import graphql.Scalars;
 import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.GraphQLArgument;
