@@ -3,6 +3,7 @@ package fivium.pat.graphql.queryfields.patient;
 import static graphql.Scalars.GraphQLString;
 import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition;
 import static graphql.schema.GraphQLObjectType.newObject;
+import static fivium.pat.utils.Constants.JWT_GRAPHQL_QUERY_PARAM;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -30,6 +31,8 @@ public class RetrieveProviderDataQF extends PAT_BaseQF {
 	
 	private static Log logger = LogFactory.getLog(RetrieveProviderDataQF.class);
 
+	private static final String PROVIDER_FITBIT = "fitbit";
+	
 
 	@Override
 	protected GraphQLObjectType defineField() {
@@ -38,40 +41,47 @@ public class RetrieveProviderDataQF extends PAT_BaseQF {
 	}
 
 	protected List<GraphQLArgument> defineArguments() {
-		return Arrays.asList(new GraphQLArgument("provider", Scalars.GraphQLString),
-				new GraphQLArgument("jwt", Scalars.GraphQLString));
+		return Arrays.asList(
+				new GraphQLArgument("provider", Scalars.GraphQLString));
 	}
 
 	protected Object fetchData(DataFetchingEnvironment environment) {
+		
 		Map<String, String> resultMap = new HashMap<String, String>();
+		
 		String provider = environment.getArgument("provider");
-		AppData appData;
-		if("fitbit".equalsIgnoreCase(provider)) {
-			String refreshToken = "";
-			logger.info("Entering Retrieve Data From Fitbit...");
-			String subject = PatUtils.getUserIdFromJWT(environment.getArgument("jwt").toString());
-			Collection<Map<String, String>> resultGetUser;
-			try {
-				resultGetUser = PAT_DAO.executeStatement(Constants.GET_SINGLE_FITBIT_USER, new Object[] {subject});
-				if(!resultGetUser.isEmpty()) {
-					refreshToken = resultGetUser.iterator().next().get("provider_refresh_token");	
-					String accessToken  = FitbitDataRetriever.getAccessToken(subject, refreshToken, false);
-					 appData = FitbitDataRetriever.pollFitbitForAUser(subject, accessToken);
-				} else {
-					resultMap.put("response", "User is not authorized yet");
-					return resultMap;
-				}
-				} catch (Exception e) {
-				logger.error("Exception occurred trying to get the provider_refresh_token in the retrive data from fitbit route"+e);
-				resultMap.put("response", "Unable to get fitbit data, please authorise your FitBit app again");
-				return resultMap;
-			}
-			if(appData != null) {
-				resultMap.put("response", new Gson().toJson(appData));	
-			} else {
-				resultMap.put("response", "Error");
-			}
+		String patientId = PatUtils.getUserIdFromJWT(environment.getArgument(JWT_GRAPHQL_QUERY_PARAM).toString());
+		
+		if(!PROVIDER_FITBIT.equalsIgnoreCase(provider)) {
+			resultMap.put("response", "Unknown provider");
+			return resultMap;
 		}
+		
+		Collection<Map<String, String>> resultGetUser;
+		try {
+			
+			resultGetUser = PAT_DAO.executeStatement(Constants.GET_SINGLE_FITBIT_USER, new Object[] {patientId});
+			if(resultGetUser.isEmpty()) {
+				resultMap.put("response", "User is not authorized yet");
+				return resultMap;
+			} 
+			
+			String refreshToken = resultGetUser.iterator().next().get("provider_refresh_token");	
+			String accessToken  = FitbitDataRetriever.getAccessToken(patientId, refreshToken, false);
+			AppData appData = FitbitDataRetriever.pollFitbitForAUser(patientId, accessToken);
+			
+			if(appData == null) {
+				resultMap.put("response", "Error - failed to retreieve fitbit data");
+				return resultMap;
+			} 
+			resultMap.put("response", new Gson().toJson(appData));	
+			
+		} catch (Exception e) {
+			logger.error("Exception occurred trying to get the provider_refresh_token in the retrive data from fitbit route"+e);
+			resultMap.put("response", "Unable to get fitbit data, please authorise your FitBit app again");
+			return resultMap;
+		}
+		
 		return resultMap;
 	}
 
