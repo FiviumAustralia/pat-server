@@ -8,14 +8,17 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang.CharEncoding;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.http.util.EncodingUtils;
 import org.mindrot.jbcrypt.BCrypt;
 
 import com.google.gson.Gson;
@@ -209,8 +212,8 @@ public class PatAuthUtils {
 			// Issue a PAT jwt token and store it in the db
 			Map<String, String> queryResultMap = queryResult.iterator().next();
 			String role = queryResultMap.get("Role");
-			String token = PatAuthUtils.issueJwtToken(googleAuthResultMap.get("Email"), CLINICIAN_PORTAL_LOGIN_CONTEXT, role);
-			Object[] queryArgsUpdate = new Object[] { token, googleAuthResultMap.get("Email") };
+			String token = PatAuthUtils.issueJwtToken(googleAuthResultMap.get("email"), CLINICIAN_PORTAL_LOGIN_CONTEXT, role);
+			Object[] queryArgsUpdate = new Object[] { token, googleAuthResultMap.get("email") };
 			PAT_DAO.executeStatement(AUTHENTICATE_CLINICIAN_PREPARED_SQL_QUERY_UPDATE_TOKEN, queryArgsUpdate);
 			
 			// return the issued pat jwt token
@@ -231,7 +234,7 @@ public class PatAuthUtils {
 		Map<String, String> resultMap = new HashMap<String, String>();
 		URL url;
 		try {
-			url = new URL(GOOGLE_AUTH_VERIFICATION_URL + googleToken);
+			url = new URL(GOOGLE_AUTH_VERIFICATION_URL + URLEncoder.encode(googleToken, CharEncoding.UTF_8));
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("GET");
 			BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
