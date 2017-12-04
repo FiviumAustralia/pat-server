@@ -18,7 +18,6 @@ import org.apache.commons.lang.CharEncoding;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.http.util.EncodingUtils;
 import org.mindrot.jbcrypt.BCrypt;
 
 import com.google.gson.Gson;
