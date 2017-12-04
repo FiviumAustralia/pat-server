@@ -44,7 +44,7 @@ public class PatientActionsSchema {
 						.dataFetcher(providerData).argument(providerData.getArguments()))
 				.field(newFieldDefinition().type(new GraphQLList(rssListQF.getField())).name("RetrieveRSS_List")
 						.dataFetcher(rssListQF).argument(rssListQF.getArguments()))
-				.field(newFieldDefinition().type(saveProviderTokenQF.getField()).name("SaveProviderToken")
+				.field(newFieldDefinition().type(saveProviderTokenQF.getField()).name("StoreProviderToken")
 						.dataFetcher(saveProviderTokenQF).argument(saveProviderTokenQF.getArguments()))
 	            .field(newFieldDefinition().type(updatePatientFirebaseTokenQF.getField()).name("UpdatePatientFirebaseToken")
 	            		.dataFetcher(updatePatientFirebaseTokenQF).argument(updatePatientFirebaseTokenQF.getArguments()))
