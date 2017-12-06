@@ -384,33 +384,64 @@ public class FitbitDataRetriever {
 	}
 
 	private static void storeCollectedData(String p_id, List<AppDataBackendPortal> appData) {
-		// TODO encryption of the collected data.
 		try {
-			Map<String, List<Object>> dataToBeStored = prepareDataToBeStored(appData);
-			// RnsDAO.executeBulkStatements(Constants.SAVE_FITBIT_DATA, appData);
-			PAT_DAO.executeSingleSQLStatementInBulk(Constants.SAVE_FITBIT_DATA, dataToBeStored);
+			Map<String, List<Object>> dataToBeStoredSteps = prepareDataToBeStoredForSteps(appData);
+			Map<String, List<Object>> dataToBeStoredSleep = prepareDataToBeStoredForSleep(appData);
+			PAT_DAO.executeSingleSQLStatementInBulk(Constants.SAVE_FITBIT_STEPS, dataToBeStoredSteps);
+			PAT_DAO.executeSingleSQLStatementInBulk(Constants.SAVE_FITBIT_SLEEP, dataToBeStoredSleep);
 		} catch (Exception e) {
 			logger.error("Exception occurred while storing fitbit data into the database for user id " + p_id
 					+ " Exception details " + e.getLocalizedMessage());
 		}
 	}
 
-	private static Map<String, List<Object>> prepareDataToBeStored(List<AppDataBackendPortal> appData) {
-		Map<String, List<Object>> dataToBeStoredMap = new HashMap<String,List<Object>>();
+	private static Map<String, List<Object>> prepareDataToBeStoredForSleep(List<AppDataBackendPortal> appData) {
+		Map<String, List<Object>> dataToBeStoredMap = new HashMap<String, List<Object>>();
 		int i = 0;
-		String query="";
+		String query = "";
 		List<Object> sqlArgumentsList = new ArrayList<>();
 		for (AppDataBackendPortal entity : appData) {
-				sqlArgumentsList.clear();
+			if (null != entity.getDailySleepData()) {
 				sqlArgumentsList.add(entity.getpId());
-				sqlArgumentsList.add(new Gson().toJson(entity));
 				sqlArgumentsList.add(entity.getActivityDate());
-				sqlArgumentsList.add(entity.getLastSyncDate());
-				sqlArgumentsList.add(new Gson().toJson(entity));
-				query+=Integer.toString(i);
+				sqlArgumentsList.add(entity.getDailySleepData().getDuration());
+				sqlArgumentsList.add(entity.getDailySleepData().getEfficiency());
+				sqlArgumentsList.add(entity.getDailySleepData().getStartTime());
+				sqlArgumentsList.add(entity.getDailySleepData().getEndTime());
+				sqlArgumentsList.add(entity.getDailySleepData().getLevels().getSleepSummary().getSleepingTime());
+				sqlArgumentsList.add(entity.getDailySleepData().getLevels().getSleepSummary().getaWakeTime());
+				sqlArgumentsList.add(entity.getDailySleepData().getLevels().getSleepSummary().getRestlessTime());
+				sqlArgumentsList.add(entity.getDailySleepData().getDuration());
+				sqlArgumentsList.add(entity.getDailySleepData().getEfficiency());
+				sqlArgumentsList.add(entity.getDailySleepData().getStartTime());
+				sqlArgumentsList.add(entity.getDailySleepData().getEndTime());
+				sqlArgumentsList.add(entity.getDailySleepData().getLevels().getSleepSummary().getSleepingTime());
+				sqlArgumentsList.add(entity.getDailySleepData().getLevels().getSleepSummary().getaWakeTime());
+				sqlArgumentsList.add(entity.getDailySleepData().getLevels().getSleepSummary().getRestlessTime());
+				query += Integer.toString(i);
 				dataToBeStoredMap.put(query, sqlArgumentsList);
+				i++;
+			}
 		}
-		
+		return dataToBeStoredMap;
+	}
+	
+	private static Map<String, List<Object>> prepareDataToBeStoredForSteps(List<AppDataBackendPortal> appData) {
+		Map<String, List<Object>> dataToBeStoredMap = new HashMap<String, List<Object>>();
+		int i = 0;
+		String query = "";
+		List<Object> sqlArgumentsList = new ArrayList<>();
+		for (AppDataBackendPortal entity : appData) {
+			sqlArgumentsList = new ArrayList<>();
+			sqlArgumentsList = new ArrayList<>();
+			sqlArgumentsList.clear();
+			sqlArgumentsList.add(entity.getpId());
+			sqlArgumentsList.add(entity.getActivityDate());
+			sqlArgumentsList.add(entity.getDailyStepData().getValue());
+			sqlArgumentsList.add(entity.getDailyStepData().getValue());
+			query += Integer.toString(i);
+			dataToBeStoredMap.put(query, sqlArgumentsList);
+		}
 		return dataToBeStoredMap;
 	}
 

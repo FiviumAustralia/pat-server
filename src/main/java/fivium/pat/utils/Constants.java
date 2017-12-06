@@ -14,6 +14,10 @@ public final class Constants {
 
 	public static final String SAVE_FITBIT_DATA = "INSERT INTO fitness_data VALUES(?, ?, ?, ?) ON DUPLICATE KEY UPDATE data=?";
 	
+	public static final String SAVE_FITBIT_SLEEP = "INSERT INTO sleepdata values (?,?,?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE duration=?, efficiency=?, start_time=?, end_time=?, minutes_asleep=?, minutes_awake=?, minutes_restless=?;";
+	
+	public static final String SAVE_FITBIT_STEPS = "INSERT INTO stepdata VALUES(?, ?, ?) ON DUPLICATE KEY UPDATE steps=?";
+	
 	public static final String SAVE_FITBIT_NOTIFICATION_DATA = "INSERT INTO notifications VALUES(?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE p_id=?";
 	
 	public static final String FITBIT_REFRESH_TOKEN_ENDPOINT = "https://api.fitbit.com/oauth2/token";
