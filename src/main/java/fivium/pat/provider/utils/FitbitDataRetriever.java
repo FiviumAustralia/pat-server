@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -41,8 +42,8 @@ import fivium.pat.datamodel.providers.fitbit.SleepActivity;
 import fivium.pat.provider.data.AppData;
 import fivium.pat.provider.data.AppDataBackendPortal;
 import fivium.pat.utils.Constants;
-import fivium.pat.utils.PatUtils;
 import fivium.pat.utils.PAT_DAO;
+import fivium.pat.utils.PatUtils;
 
 public class FitbitDataRetriever {
 	private static Log logger = LogFactory.getLog(FitbitDataRetriever.class);
@@ -250,7 +251,8 @@ public class FitbitDataRetriever {
 			for (Map<String, String> user : result) {
 				String refresh_token = user.get("provider_refresh_token");
 				String p_id = user.get("p_id");
-				String access_token = FitbitDataRetriever.getAccessToken(p_id, refresh_token, true);
+				boolean sendAccessErrorNotifications = Calendar.getInstance().get(Calendar.HOUR_OF_DAY) % 3 == 0;
+				String access_token = FitbitDataRetriever.getAccessToken(p_id, refresh_token, sendAccessErrorNotifications);
 				if (null != access_token && !"".equalsIgnoreCase(access_token)) {
 					String lastDate = FitbitDataRetriever.getLastFetchedDate(p_id);
 					if (null == lastDate || lastDate.equalsIgnoreCase("null")) {
@@ -418,7 +420,7 @@ public class FitbitDataRetriever {
 
 	}
 
-	private static AppData pullFitbitDataForMobileApp(String pId, String lastDate, String accessToken) {
+	public static AppData pullFitbitDataForMobileApp(String pId, String lastDate, String accessToken) {
 		AppData appData = new AppData();
 		ActivitiesSteps activityData = FitbitDataRetriever.getActivityData(pId, lastDate, accessToken);
 		List<Device> deviceInformation = FitbitDataRetriever.getDeviceInformation(pId, accessToken);
