@@ -44,7 +44,7 @@ public class CORS_Filter implements Filter {
 	    
 	    httpServletResponse.addHeader("Access-Control-Allow-Origin","*");
 	    httpServletResponse.addHeader("Access-Control-Allow-Methods","GET,POST");
-	    httpServletResponse.addHeader("Access-Control-Allow-Headers","Origin, X-Requested-With, Content-Type, Accept");
+	    httpServletResponse.addHeader("Access-Control-Allow-Headers","Origin, X-Requested-With, Content-Type, Accept, Authorization");
 	    	    
 	    // Just ACCEPT and REPLY OK if OPTIONS
 	    if ( httpServletRequest.getMethod().equals("OPTIONS") ) {
