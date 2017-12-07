@@ -42,13 +42,13 @@ public class RetrieveProviderDataQF extends PAT_BaseQF {
 
 	protected List<GraphQLArgument> defineArguments() {
 		return Arrays.asList(
-				new GraphQLArgument("provider", Scalars.GraphQLString));
+				new GraphQLArgument("provider", Scalars.GraphQLString),
+				new GraphQLArgument("lastFetchedDate", Scalars.GraphQLString));
 	}
 
-	protected Object fetchData(DataFetchingEnvironment environment) {
+protected Object fetchData(DataFetchingEnvironment environment) {
 		
 		Map<String, String> resultMap = new HashMap<String, String>();
-		
 		String provider = environment.getArgument("provider");
 		String patientId = PatUtils.getUserIdFromJWT(environment.getArgument(JWT_GRAPHQL_QUERY_PARAM).toString());
 		
@@ -56,19 +56,17 @@ public class RetrieveProviderDataQF extends PAT_BaseQF {
 			resultMap.put("response", "Unknown provider");
 			return resultMap;
 		}
-		
 		Collection<Map<String, String>> resultGetUser;
 		try {
-			
 			resultGetUser = PAT_DAO.executeStatement(Constants.GET_SINGLE_FITBIT_USER, new Object[] {patientId});
 			if(resultGetUser.isEmpty()) {
 				resultMap.put("response", "User is not authorized yet");
 				return resultMap;
 			} 
-			
 			String refreshToken = resultGetUser.iterator().next().get("provider_refresh_token");	
 			String accessToken  = FitbitDataRetriever.getAccessToken(patientId, refreshToken, false);
-			AppData appData = FitbitDataRetriever.pollFitbitForAUser(patientId, accessToken);
+			String lastFetchedDate = environment.getArgument("lastFetchedDate");
+			AppData  appData = FitbitDataRetriever.pullFitbitDataForMobileApp(patientId,lastFetchedDate, accessToken);
 			
 			if(appData == null) {
 				resultMap.put("response", "Error - failed to retreieve fitbit data");
@@ -84,6 +82,5 @@ public class RetrieveProviderDataQF extends PAT_BaseQF {
 		
 		return resultMap;
 	}
-
 
 }
