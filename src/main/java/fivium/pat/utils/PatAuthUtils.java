@@ -217,6 +217,9 @@ public class PatAuthUtils {
 			
 			// return the issued pat jwt token
 			clinicianLoginResultMap.put("jwt_token", token);		
+			clinicianLoginResultMap.put("Firstname", queryResultMap.get("Firstname"));
+			clinicianLoginResultMap.put("Lastname", queryResultMap.get("Lastname"));
+			clinicianLoginResultMap.put("Role", queryResultMap.get("Role"));
 			return clinicianLoginResultMap;
 
 		} catch (Exception e) {
