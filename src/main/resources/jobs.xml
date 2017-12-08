@@ -17,7 +17,7 @@
 			<name>PollProviders</name>
 			<group>RNS</group>
 			<description>This is Job A</description>
-			<job-class>fivium.rns.utils.ProviderPolling</job-class>
+			<job-class>fivium.pat.schedulers.ProviderPolling</job-class>
 		</job>
 
 		<trigger>
