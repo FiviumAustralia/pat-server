@@ -15,13 +15,15 @@ import org.apache.commons.logging.LogFactory;
 
 import fivium.pat.graphql.PAT_BaseQF;
 import fivium.pat.utils.PAT_DAO;
+import fivium.pat.utils.PatAuthUtils;
+import fivium.pat.utils.PatUtils;
 import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.GraphQLArgument;
 import graphql.schema.GraphQLObjectType;
 
 public class FetchTrialStartDateQF extends PAT_BaseQF {
 
-	private static final String FETCH_START_DATE = "select max(date) from fitness_data;";
+	private static final String FETCH_START_DATE = "SELECT MIN(dateA) FROM (SELECT date AS dateA FROM stepdata UNION ALL SELECT date AS dateB FROM weightdata) AS tab;";
 	private static Log logger = LogFactory.getLog(FetchTrialStartDateQF.class);
 	
 	@Override
@@ -46,8 +48,10 @@ public class FetchTrialStartDateQF extends PAT_BaseQF {
 			Collection<Map<String, String>> sqlResult;
 			try {
 				sqlResult = PAT_DAO.executeStatement(FETCH_START_DATE, null);
-				if(!sqlResult.isEmpty()){
-					resultMap.put("result", sqlResult.iterator().next().get("max(date)"));
+				if(!sqlResult.isEmpty() && null != sqlResult.iterator().next().get("MIN(dateA)")){
+					resultMap.put("result", sqlResult.iterator().next().get("MIN(dateA)"));
+				} else {
+					resultMap.put("result", PatUtils.getCurrentFormattedDate());
 				}
 			}	catch (Exception e) {
 				logger.error("Unexpected error occured", e);
