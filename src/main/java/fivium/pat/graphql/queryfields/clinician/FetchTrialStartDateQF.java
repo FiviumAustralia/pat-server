@@ -48,8 +48,8 @@ public class FetchTrialStartDateQF extends PAT_BaseQF {
 			Collection<Map<String, String>> sqlResult;
 			try {
 				sqlResult = PAT_DAO.executeStatement(FETCH_START_DATE, null);
-				if(!sqlResult.isEmpty() && null != sqlResult.iterator().next().get("max(date)")){
-					resultMap.put("result", sqlResult.iterator().next().get("max(date)"));
+				if(!sqlResult.isEmpty() && null != sqlResult.iterator().next().get("MIN(dateA)")){
+					resultMap.put("result", sqlResult.iterator().next().get("MIN(dateA)"));
 				} else {
 					resultMap.put("result", PatUtils.getCurrentFormattedDate());
 				}
