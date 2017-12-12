@@ -10,6 +10,8 @@ public final class Constants {
 	
 	public static final String GET_SINGLE_FITBIT_USER = "SELECT provider_refresh_token FROM patient WHERE provider = 'fitbit' AND p_id = ?";
 
+	public static final String GET_CLINICIAN_COMPANY = "SELECT Company FROM clinicians WHERE Email = ?";
+
 	public static final String LAST_FETCHED_DATE = "SELECT p_id, MAX(last_sync_date) AS \"date\" FROM fitness_data WHERE p_id=?";
 
 	public static final String SAVE_FITBIT_DATA = "INSERT INTO fitness_data VALUES(?, ?, ?, ?) ON DUPLICATE KEY UPDATE data=?";
