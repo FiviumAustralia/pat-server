@@ -1,14 +1,14 @@
 package fivium.pat.graphql.queryfields.clinician;
 
+import static fivium.pat.utils.Constants.GET_CLINICIAN_COMPANY;
+import static fivium.pat.utils.Constants.JWT_GRAPHQL_QUERY_PARAM;
 import static graphql.Scalars.GraphQLString;
 import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition;
 import static graphql.schema.GraphQLObjectType.newObject;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import fivium.pat.utils.PatUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -46,8 +46,7 @@ public class AddPatientQF extends PAT_BaseQF {
 				new GraphQLArgument("patient_next_of_kin_relationship", GraphQLString),
 				new GraphQLArgument("patient_next_of_kin_first_name", GraphQLString),
 				new GraphQLArgument("patient_next_of_kin_last_name", GraphQLString),
-				new GraphQLArgument("patient_next_of_kin_contact_number", GraphQLString),
-				new GraphQLArgument("company", GraphQLString));
+				new GraphQLArgument("patient_next_of_kin_contact_number", GraphQLString));
 	}
 
 	@Override
@@ -56,7 +55,10 @@ public class AddPatientQF extends PAT_BaseQF {
 		Map<String, String> resultMap = new HashMap<String, String>();
 
 		try {
-			Object[] queryArgsNewPatient = new Object[] { environment.getArgument("patient_study_id"), "", "", "", "", "","Not Active", environment.getArgument("company"), "" };
+			String clinician_id = PatUtils.getUserIdFromJWT(environment.getArgument(JWT_GRAPHQL_QUERY_PARAM).toString());
+			Collection<Map<String, String>> company_result = PAT_DAO.executeFetchStatement(GET_CLINICIAN_COMPANY, new Object[] { clinician_id });
+			String clinician_company = company_result.iterator().next().get("Company");
+			Object[] queryArgsNewPatient = new Object[] { environment.getArgument("patient_study_id"), "", "", "", "", "","Not Active", clinician_company, "" };
 
 			Object[] queryArgsNewPatientDetails = new Object[] { 
 					environment.getArgument("patient_study_id"),                    // #1 study_id
