@@ -1,7 +1,6 @@
 package fivium.pat.graphql.queryfields.clinician;
 
-import static fivium.pat.utils.Constants.GET_CLINICIAN_COMPANY;
-import static fivium.pat.utils.Constants.JWT_GRAPHQL_QUERY_PARAM;
+import static fivium.pat.utils.Constants.*;
 import static graphql.Scalars.GraphQLString;
 import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition;
 import static graphql.schema.GraphQLObjectType.newObject;

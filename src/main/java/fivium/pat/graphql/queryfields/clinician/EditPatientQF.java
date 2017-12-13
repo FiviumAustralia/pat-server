@@ -1,14 +1,13 @@
 package fivium.pat.graphql.queryfields.clinician;
 
+import static fivium.pat.utils.Constants.*;
 import static graphql.Scalars.GraphQLString;
 import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition;
 import static graphql.schema.GraphQLObjectType.newObject;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import fivium.pat.utils.PatUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -20,7 +19,7 @@ import graphql.schema.GraphQLObjectType;
 
 public class EditPatientQF extends PAT_BaseQF {
 
-	private static final String UPDATE_PATIENT_PREPARED_SQL_QUERY = "UPDATE pat.patient_details SET first_name = ?, last_name = ?, mrn = ?, dob = ?, contact = ?, address = ?, email = ?, next_of_kin_relationship = ?, next_of_kin_first_name = ?, next_of_kin_last_name = ?, next_of_kin_contact_number = ? WHERE study_id = ? ";
+	private static final String UPDATE_PATIENT_PREPARED_SQL_QUERY = "UPDATE pat.patient_details SET first_name = ?, last_name = ?, mrn = ?, dob = ?, contact = ?, address = ?, email = ?, next_of_kin_relationship = ?, next_of_kin_first_name = ?, next_of_kin_last_name = ?, next_of_kin_contact_number = ? WHERE study_id = ? AND EXISTS(SELECT * FROM patient WHERE pat.patient_details.study_id = patient.p_id AND company = ?)";
 	private static Log logger = LogFactory.getLog(EditPatientQF.class);
 
 	@Override
@@ -52,6 +51,10 @@ public class EditPatientQF extends PAT_BaseQF {
 		Map<String, String> resultMap = new HashMap<String, String>();
 
 		try {
+			String clinician_id = PatUtils.getUserIdFromJWT(environment.getArgument(JWT_GRAPHQL_QUERY_PARAM).toString());
+			Collection<Map<String, String>> company_result = PAT_DAO.executeFetchStatement(GET_CLINICIAN_COMPANY, new Object[] { clinician_id });
+			String clinician_company = company_result.iterator().next().get("Company");
+
 			Object[] queryArgs = new Object[] { environment.getArgument("patient_first_name"),
 					environment.getArgument("patient_last_name"), environment.getArgument("patient_mrn"),
 					environment.getArgument("patient_dob"), environment.getArgument("patient_contact"),
@@ -60,7 +63,8 @@ public class EditPatientQF extends PAT_BaseQF {
 					environment.getArgument("patient_next_of_kin_first_name"),
 					environment.getArgument("patient_next_of_kin_last_name"),
 					environment.getArgument("patient_next_of_kin_contact_number"),
-					environment.getArgument("patient_study_id") };
+					environment.getArgument("patient_study_id"),
+					clinician_company };
 			PAT_DAO.executeStatement(UPDATE_PATIENT_PREPARED_SQL_QUERY, queryArgs);
 			resultMap.put("result", "Patient details sucesfully updated.");
 		} catch (Exception ex) {
