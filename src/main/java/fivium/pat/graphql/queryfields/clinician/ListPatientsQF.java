@@ -1,5 +1,6 @@
 package fivium.pat.graphql.queryfields.clinician;
 
+import static fivium.pat.utils.Constants.*;
 import static graphql.Scalars.GraphQLString;
 import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition;
 import static graphql.schema.GraphQLObjectType.newObject;
@@ -10,6 +11,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import fivium.pat.utils.PatUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -39,9 +41,12 @@ public class ListPatientsQF extends PAT_BaseQF {
 	"(SELECT study_id, max(date) last_survey_sync_date "+
 	"FROM surveydata "+
 	"GROUP BY study_id) latestsurveysync "+
-	"ON p.study_id = latestsurveysync.study_id ";
+	"ON p.study_id = latestsurveysync.study_id "+
+	"LEFT JOIN patient pp "+
+	"ON p.study_id = pp.p_id "+
+	"WHERE pp.company = ? ";
 	
-	private static final String LIST_PATIENT_PREPARED_SQL_WHERE_CLAUSE = " WHERE p.study_id = ?";
+	private static final String LIST_PATIENT_PREPARED_SQL_WHERE_CLAUSE = " AND p.study_id = ?";
 	
 	private static Log logger = LogFactory.getLog(ListPatientsQF.class);
 	
@@ -126,14 +131,18 @@ public class ListPatientsQF extends PAT_BaseQF {
 
 	@Override
 	protected Object fetchData(DataFetchingEnvironment environment) {
-		Object[] queryArgs = new Object[] {
-					environment.getArgument("study_id")
-				};
+		String clinician_id = PatUtils.getUserIdFromJWT(environment.getArgument(JWT_GRAPHQL_QUERY_PARAM).toString());
 
 		Collection<Map<String, String>> result = new ArrayList<Map<String, String>>();
 		try {
+		    Collection<Map<String, String>> company_result = PAT_DAO.executeFetchStatement(GET_CLINICIAN_COMPANY, new Object[] { clinician_id });
+		    String clinician_company = company_result.iterator().next().get("Company");
+			Object[] queryArgs = new Object[] {
+					clinician_company,
+					environment.getArgument("study_id")
+			};
 			// Add the WHERE claws to the SQL statement if the study ID param is supplied
-			String sql = (queryArgs.length > 0 && queryArgs[0] != null ) ?
+			String sql = (queryArgs.length > 0 && queryArgs[1] != null ) ?
 					LIST_PATIENTS_PREPARED_SQL_BASE_QUERY + LIST_PATIENT_PREPARED_SQL_WHERE_CLAUSE :
 					LIST_PATIENTS_PREPARED_SQL_BASE_QUERY;
 			

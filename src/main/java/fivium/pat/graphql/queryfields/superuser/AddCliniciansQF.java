@@ -1,5 +1,7 @@
 package fivium.pat.graphql.queryfields.superuser;
 
+import static fivium.pat.utils.Constants.GET_CLINICIAN_COMPANY;
+import static fivium.pat.utils.Constants.JWT_GRAPHQL_QUERY_PARAM;
 import static graphql.Scalars.GraphQLString;
 import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition;
 import static graphql.schema.GraphQLObjectType.newObject;
@@ -11,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import fivium.pat.utils.PatUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.mindrot.jbcrypt.BCrypt;
@@ -25,7 +28,7 @@ import graphql.schema.GraphQLObjectType;
 
 public class AddCliniciansQF extends PAT_BaseQF {
 
-	private static final String ADD_CLINICIAN_PREPARED_SQL_QUERY = "INSERT INTO clinicians (Email, Password, Firstname, Lastname, Token, Role) VALUES (?,?,?,?,?,?)";
+	private static final String ADD_CLINICIAN_PREPARED_SQL_QUERY = "INSERT INTO clinicians (Email, Password, Firstname, Lastname, Token, Role, Company) VALUES (?,?,?,?,?,?,?)";
 	
 	private static Log logger = LogFactory.getLog(AddCliniciansQF.class);
 	
@@ -54,13 +57,18 @@ public class AddCliniciansQF extends PAT_BaseQF {
 	protected Object fetchData(DataFetchingEnvironment environment)  {
 		Map<String, String> resultMap = new HashMap<String, String>();
 		try {
+			String clinician_id = PatUtils.getUserIdFromJWT(environment.getArgument(JWT_GRAPHQL_QUERY_PARAM).toString());
+			Collection<Map<String, String>> company_result = PAT_DAO.executeFetchStatement(GET_CLINICIAN_COMPANY, new Object[] { clinician_id });
+			String clinician_company = company_result.iterator().next().get("Company");
+
 			Object[] queryArgs = new Object[] {
 					environment.getArgument("clinician_email"),
 					environment.getArgument("clinician_password"),
 					environment.getArgument("clinician_first_name"),
 					environment.getArgument("clinician_last_name"),
 					0,
-					"user"
+					"user",
+					clinician_company
 			};
 			Collection<Map<String, String>> sqlResult;
 			String hashed = BCrypt.hashpw(queryArgs[1].toString(), BCrypt.gensalt());
