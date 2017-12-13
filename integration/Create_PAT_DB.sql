@@ -36,6 +36,7 @@ CREATE TABLE IF NOT EXISTS `clinicians` (
   `Lastname` varchar(50) NOT NULL DEFAULT '0',
   `Token` varchar(500) NOT NULL DEFAULT '0',
   `Role` varchar(50) NOT NULL DEFAULT 'user',
+  `Company` varchar(50) NOT NULL DEFAULT '',
   PRIMARY KEY (`Email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
