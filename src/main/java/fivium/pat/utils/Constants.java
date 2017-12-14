@@ -17,9 +17,13 @@ public final class Constants {
 	public static final String SAVE_FITBIT_DATA = "INSERT INTO fitness_data VALUES(?, ?, ?, ?) ON DUPLICATE KEY UPDATE data=?";
 	
 	public static final String SAVE_FITBIT_SLEEP = "INSERT INTO sleepdata values (?,?,?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE duration=?, efficiency=?, start_time=?, end_time=?, minutes_asleep=?, minutes_awake=?, minutes_restless=?;";
-	
+
 	public static final String SAVE_FITBIT_STEPS = "INSERT INTO stepdata VALUES(?, ?, ?) ON DUPLICATE KEY UPDATE steps=?";
-	
+
+	public static final String SAVE_FITBIT_HEART_RATE = "INSERT INTO heart_rate VALUES(?, ?, ?) ON DUPLICATE KEY UPDATE resting_heart_rate=?";
+
+	public static final String SAVE_FITBIT_HEART_RATE_ZONES = "INSERT INTO heart_rate_zones VALUES(?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE calories_out=?, max=?, min=?, minutes=?";
+
 	public static final String SAVE_FITBIT_NOTIFICATION_DATA = "INSERT INTO notifications VALUES(?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE p_id=?";
 	
 	public static final String FITBIT_REFRESH_TOKEN_ENDPOINT = "https://api.fitbit.com/oauth2/token";
@@ -29,6 +33,8 @@ public final class Constants {
 	public final static String FITBIT_DEVICE_INFO_ENDPOINT = "https://api.fitbit.com/1/user/-/devices.json";
 	
 	public final static String FITBIT_SLEEP_LOG_LIST_ENDPOINT = "https://api.fitbit.com/1.2/user/-/sleep/date/${startDate}/${endDate}.json";
+
+	public final static String FITBIT_HEART_RATE_TIME_SRIES_ENDPOINT = "https://api.fitbit.com/1/user/-/activities/heart/date/${baseDate}/${endDate}.json";
 	
 	public static final String STORE_REFRESH_TOKEN = "UPDATE patient SET provider_refresh_token=? WHERE p_id=?";
 	

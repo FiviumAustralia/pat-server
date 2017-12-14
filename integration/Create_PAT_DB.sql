@@ -161,6 +161,30 @@ CREATE TABLE IF NOT EXISTS `stepdata` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
+-- Dumping structure for table pat.heart_rate_zones
+DROP TABLE IF EXISTS `heart_rate`;
+CREATE TABLE IF NOT EXISTS `heart_rate` (
+  `study_id` varchar(50) NOT NULL,
+  `date` date NOT NULL,
+  `resting_heart_rate` int(3) DEFAULT NULL,
+  PRIMARY KEY (`study_id`,`date`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Data exporting was unselected.
+-- Dumping structure for table pat.heart_rate_zones
+DROP TABLE IF EXISTS `heart_rate_zones`;
+CREATE TABLE IF NOT EXISTS `heart_rate_zones` (
+  `study_id` varchar(50) NOT NULL,
+  `date` date NOT NULL,
+  `calories_out` float(10,5) DEFAULT NULL,
+  `max` int(3) DEFAULT NULL,
+  `min` int(3) DEFAULT NULL,
+  `minutes` int(4) DEFAULT NULL,
+  `name` varchar(50) NOT NULL,
+  PRIMARY KEY (`study_id`,`date`,`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Data exporting was unselected.
 -- Dumping structure for table pat.surveydata
 DROP TABLE IF EXISTS `surveydata`;
 CREATE TABLE IF NOT EXISTS `surveydata` (

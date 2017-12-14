@@ -23,6 +23,7 @@ import java.util.Properties;
 
 import javax.servlet.http.HttpServletResponse;
 
+import fivium.pat.datamodel.providers.fitbit.*;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -36,9 +37,6 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import fivium.pat.datamodel.providers.fitbit.ActivitiesSteps;
-import fivium.pat.datamodel.providers.fitbit.Device;
-import fivium.pat.datamodel.providers.fitbit.SleepActivity;
 import fivium.pat.provider.data.AppData;
 import fivium.pat.provider.data.AppDataBackendPortal;
 import fivium.pat.utils.Constants;
@@ -127,6 +125,34 @@ public class FitbitDataRetriever {
 		}
 	}
 
+	public static ActivitiesHeart getHeartRateData(String p_id, String base_date, String access_token) {
+		// get today's date
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = new Date();
+		String end_date = df.format(date);
+
+		logger.info("Getting heart rate data for user " + p_id + " from " + base_date + " to " + end_date);
+
+		String endpoint = Constants.FITBIT_HEART_RATE_TIME_SRIES_ENDPOINT.replace("${baseDate}", base_date)
+				.replace("${endDate}", end_date);
+		HttpClient client = HttpClientBuilder.create().build();
+		HttpGet get = new HttpGet(endpoint);
+		get.setHeader("Authorization", "Bearer " + access_token);
+
+		try {
+			HttpResponse response = client.execute(get);
+			checkResponseHeader(response);
+
+			String resultAsJSON_String = IOUtils.toString(response.getEntity().getContent());
+			logger.info("Fitbit heart rate data response as a string " + resultAsJSON_String);
+			ActivitiesHeart resultAsJSON_Object = new Gson().fromJson(resultAsJSON_String, ActivitiesHeart.class);
+			return resultAsJSON_Object;
+		} catch (Exception e) {
+			logger.error("Unable to get fitness data from fitbit: " + e);
+			return null;
+		}
+	}
+
 	public static ArrayList<Device> getDeviceInformation(String p_id, String access_token) {
 		logger.info("Getting device information for " + p_id);
 
@@ -191,8 +217,9 @@ public class FitbitDataRetriever {
 		ActivitiesSteps activityData = FitbitDataRetriever.getActivityData(pId, lastDate, accessToken);
 		List<Device> deviceInformation = FitbitDataRetriever.getDeviceInformation(pId, accessToken);
 		SleepActivity sleepData = FitbitDataRetriever.getSleepData(pId, lastDate, accessToken);
-		if (activityData != null && deviceInformation != null && sleepData != null) {
-			appData = FitbitMapper.mapCliniciansAppDataStructure(pId, activityData, deviceInformation, sleepData);
+		ActivitiesHeart heartData = FitbitDataRetriever.getHeartRateData(pId, lastDate, accessToken);
+		if (activityData != null && deviceInformation != null && sleepData != null && heartData != null) {
+			appData = FitbitMapper.mapCliniciansAppDataStructure(pId, activityData, deviceInformation, sleepData, heartData);
 			return appData;
 		}
 		return null;
@@ -387,8 +414,12 @@ public class FitbitDataRetriever {
 		try {
 			Map<String, List<Object>> dataToBeStoredSteps = prepareDataToBeStoredForSteps(appData);
 			Map<String, List<Object>> dataToBeStoredSleep = prepareDataToBeStoredForSleep(appData);
+			Map<String, List<Object>> dataToBeStoredHeartRate = prepareDataToBeStoredForHeartRate(appData);
+			Map<String, List<Object>> dataToBeStoredHeartRateZones = prepareDataToBeStoredForHeartRateZones(appData);
 			PAT_DAO.executeSingleSQLStatementInBulk(Constants.SAVE_FITBIT_STEPS, dataToBeStoredSteps);
 			PAT_DAO.executeSingleSQLStatementInBulk(Constants.SAVE_FITBIT_SLEEP, dataToBeStoredSleep);
+			PAT_DAO.executeSingleSQLStatementInBulk(Constants.SAVE_FITBIT_HEART_RATE, dataToBeStoredHeartRate);
+			PAT_DAO.executeSingleSQLStatementInBulk(Constants.SAVE_FITBIT_HEART_RATE_ZONES, dataToBeStoredHeartRateZones);
 		} catch (Exception e) {
 			logger.error("Exception occurred while storing fitbit data into the database for user id " + p_id
 					+ " Exception details " + e.getLocalizedMessage());
@@ -433,7 +464,6 @@ public class FitbitDataRetriever {
 		List<Object> sqlArgumentsList = new ArrayList<>();
 		for (AppDataBackendPortal entity : appData) {
 			sqlArgumentsList = new ArrayList<>();
-			sqlArgumentsList = new ArrayList<>();
 			sqlArgumentsList.clear();
 			sqlArgumentsList.add(entity.getpId());
 			sqlArgumentsList.add(entity.getActivityDate());
@@ -441,6 +471,54 @@ public class FitbitDataRetriever {
 			sqlArgumentsList.add(entity.getDailyStepData().getValue());
 			query += Integer.toString(i);
 			dataToBeStoredMap.put(query, sqlArgumentsList);
+		}
+		return dataToBeStoredMap;
+	}
+
+	private static Map<String, List<Object>> prepareDataToBeStoredForHeartRate(List<AppDataBackendPortal> appData) {
+		Map<String, List<Object>> dataToBeStoredMap = new HashMap<String, List<Object>>();
+		int i = 0;
+		String query = "";
+		List<Object> sqlArgumentsList = new ArrayList<>();
+		for (AppDataBackendPortal entity : appData) {
+			HeartValue heartData = entity.getDailyHeartData().getValue();
+			sqlArgumentsList = new ArrayList<>();
+			sqlArgumentsList.clear();
+			sqlArgumentsList.add(entity.getpId());
+			sqlArgumentsList.add(entity.getActivityDate());
+			sqlArgumentsList.add(heartData.getRestingHeartRate());
+			sqlArgumentsList.add(heartData.getRestingHeartRate());
+			query += Integer.toString(i);
+			dataToBeStoredMap.put(query, sqlArgumentsList);
+		}
+		return dataToBeStoredMap;
+	}
+
+	private static Map<String, List<Object>> prepareDataToBeStoredForHeartRateZones(List<AppDataBackendPortal> appData) {
+		Map<String, List<Object>> dataToBeStoredMap = new HashMap<String, List<Object>>();
+		int i = 0;
+		String query = "";
+		List<Object> sqlArgumentsList = new ArrayList<>();
+		for (AppDataBackendPortal entity : appData) {
+			ArrayList<HeartRateZone> heartRateZones = entity.getDailyHeartData().getValue().getHeartRateZones();
+
+			for(HeartRateZone heartRateZone : heartRateZones) {
+				sqlArgumentsList = new ArrayList<>();
+				sqlArgumentsList.clear();
+				sqlArgumentsList.add(entity.getpId());
+				sqlArgumentsList.add(entity.getActivityDate());
+				sqlArgumentsList.add(heartRateZone.getCaloriesOut());
+				sqlArgumentsList.add(heartRateZone.getMax());
+				sqlArgumentsList.add(heartRateZone.getMin());
+				sqlArgumentsList.add(heartRateZone.getMinutes());
+				sqlArgumentsList.add(heartRateZone.getName());
+				sqlArgumentsList.add(heartRateZone.getCaloriesOut());
+				sqlArgumentsList.add(heartRateZone.getMax());
+				sqlArgumentsList.add(heartRateZone.getMin());
+				sqlArgumentsList.add(heartRateZone.getMinutes());
+				query += Integer.toString(i);
+				dataToBeStoredMap.put(query, sqlArgumentsList);
+			}
 		}
 		return dataToBeStoredMap;
 	}
