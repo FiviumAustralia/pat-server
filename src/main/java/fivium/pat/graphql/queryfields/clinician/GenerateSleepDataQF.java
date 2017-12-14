@@ -24,10 +24,14 @@ import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.GraphQLArgument;
 import graphql.schema.GraphQLObjectType;
 
+import static fivium.pat.utils.Constants.GET_CLINICIAN_COMPANY;
+import static fivium.pat.utils.Constants.JWT_GRAPHQL_QUERY_PARAM;
+import fivium.pat.utils.PatUtils;
+
 public class GenerateSleepDataQF extends PAT_BaseQF {
 
-  private static final String GENERATE_GRAPH_PREPARED_SQL_QUERY = "SELECT sleepdata.duration, sleepdata.efficiency, patient.first_name FROM sleepdata INNER JOIN patient ON sleepdata.study_id = patient.study_id WHERE date= (SELECT MAX(date) FROM sleepdata) ";
-  private static final String GENERATE_USER_GRAPH_PREPARED_SQL_QUERY= "SELECT sleepdata.steps, sleepdata.efficiency, sleepdata.date, patient.first_name FROM sleepdata INNER JOIN patient ON sleepdata.study_id = patient.study_id WHERE sleepdata.study_id = ?";
+  private static final String GENERATE_GRAPH_PREPARED_SQL_QUERY = "SELECT sleepdata.duration, sleepdata.efficiency, patient_details.first_name FROM sleepdata INNER JOIN patient_details ON sleepdata.study_id = patient_details.study_id INNER JOIN patient ON sleepdata.study_id = patient.p_id WHERE date= (SELECT MAX(date) FROM sleepdata) AND patient.Company = ?";
+  private static final String GENERATE_USER_GRAPH_PREPARED_SQL_QUERY= "SELECT sleepdata.duration, sleepdata.efficiency, sleepdata.date, patient_details.first_name FROM sleepdata INNER JOIN patient_details ON sleepdata.study_id = patient_details.study_id INNER JOIN patient ON sleepdata.study_id = patient.p_id  WHERE patient.Company = ? AND sleepdata.study_id = ?";
   private static Log logger = LogFactory.getLog(GenerateSleepDataQF.class);
 
   @Override
@@ -50,21 +54,26 @@ public class GenerateSleepDataQF extends PAT_BaseQF {
 
   @Override
   protected Object fetchData(DataFetchingEnvironment environment) {
-   
-    Collection<Map<String, String>> sqlResult;
-    Map<String, String> result = new HashMap<String, String>();
-    Map<String, String> aMap = new HashMap<String, String>();
-    Gson gson = new GsonBuilder().disableHtmlEscaping().create();
-    
-    Object[] queryArgs = new Object[] {
-				environment.getArgument("study_id")
-			};
+	  Collection<Map<String, String>> sqlResult;
+      Map<String, String> result = new HashMap<String, String>();
+      Map<String, String> aMap = new HashMap<String, String>();
+      Gson gson = new GsonBuilder().disableHtmlEscaping().create();
 
     try {
-    	 if (queryArgs.length > 0 && queryArgs[0] != null ) {
+    	String clinician_id = PatUtils.getUserIdFromJWT(environment.getArgument(JWT_GRAPHQL_QUERY_PARAM).toString());
+    	Collection<Map<String, String>> company_result = PAT_DAO.executeFetchStatement(GET_CLINICIAN_COMPANY, new Object[] { clinician_id });
+    	String clinician_company = company_result.iterator().next().get("Company");
+    	  
+        
+        Object[] queryArgs = new Object[] {
+    				environment.getArgument("study_id"),
+    				clinician_company
+    			};
+//    	If two arguments in the query (in this case, Company and study_id)
+    	 if (queryArgs.length > 1 && queryArgs[1] != null ) {
     		 sqlResult = PAT_DAO.executeStatement(GENERATE_USER_GRAPH_PREPARED_SQL_QUERY, queryArgs);
        } else{
-				sqlResult = PAT_DAO.executeStatement(GENERATE_GRAPH_PREPARED_SQL_QUERY, null);
+				sqlResult = PAT_DAO.executeStatement(GENERATE_GRAPH_PREPARED_SQL_QUERY, queryArgs);
        }
     	 if (!sqlResult.isEmpty()) {
 					String dailySleepData = gson.toJson(sqlResult);

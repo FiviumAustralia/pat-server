@@ -1,5 +1,7 @@
 package fivium.pat.graphql.queryfields.clinician;
 
+import static fivium.pat.utils.Constants.GET_CLINICIAN_COMPANY;
+import static fivium.pat.utils.Constants.JWT_GRAPHQL_QUERY_PARAM;
 import static graphql.Scalars.GraphQLString;
 import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition;
 import static graphql.schema.GraphQLObjectType.newObject;
@@ -17,6 +19,7 @@ import com.google.gson.Gson;
 
 import fivium.pat.graphql.PAT_BaseQF;
 import fivium.pat.utils.PAT_DAO;
+import fivium.pat.utils.PatUtils;
 import graphql.Scalars;
 import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.GraphQLArgument;
@@ -24,8 +27,8 @@ import graphql.schema.GraphQLObjectType;
 
 public class GetGraphDataQF extends PAT_BaseQF {
 
-	private static final String GET_GRAPH_PREPARED_SQL_QUERY = "SELECT s.steps, p.first_name FROM stepdata s INNER JOIN patient_details p ON s.study_id = p.study_id WHERE s.date= (SELECT MAX(s.date) FROM stepdata) ";
-	private static final String GET_USER_GRAPH_PREPARED_SQL_QUERY = "SELECT s.steps, s.date, p.first_name FROM stepdata s INNER JOIN patient_details p ON s.study_id = p.study_id WHERE s.study_id = ?";
+	private static final String GET_GRAPH_PREPARED_SQL_QUERY = "SELECT s.steps, p.first_name FROM stepdata s INNER JOIN patient_details p ON s.study_id = p.study_id INNER JOIN patient ON s.study_id = patient.p_id WHERE s.date= (SELECT MAX(s.date) FROM stepdata) AND patient.Company = ? ";
+	private static final String GET_USER_GRAPH_PREPARED_SQL_QUERY = "SELECT s.steps, s.date, p.first_name FROM stepdata s INNER JOIN patient_details p ON s.study_id = p.study_id INNER JOIN patient ON s.study_id = patient.p_id WHERE patient.Company = ? AND s.study_id = ?";
 	private static Log logger = LogFactory.getLog(GetGraphDataQF.class);
 
 	@Override
@@ -44,15 +47,17 @@ public class GetGraphDataQF extends PAT_BaseQF {
 
 		Map<String, String> result = new HashMap<String, String>();
 
-		Object[] queryArgs = new Object[] { environment.getArgument("study_id") };
-
 		try {
-			
+			String clinician_id = PatUtils.getUserIdFromJWT(environment.getArgument(JWT_GRAPHQL_QUERY_PARAM).toString());
+	    	Collection<Map<String, String>> company_result = PAT_DAO.executeFetchStatement(GET_CLINICIAN_COMPANY, new Object[] { clinician_id });
+	    	String clinician_company = company_result.iterator().next().get("Company");
 			Collection<Map<String, String>> sqlResult;
-			if (queryArgs.length > 0 && queryArgs[0] != null) {
+			Object[] queryArgs = new Object[] { environment.getArgument("study_id"), clinician_company };
+//  	    If two arguments in the query (in this case, Company and study_id)
+			if (queryArgs.length > 1 && queryArgs[1] != null) {
 				sqlResult = PAT_DAO.executeStatement(GET_USER_GRAPH_PREPARED_SQL_QUERY, queryArgs);
 			} else {
-				sqlResult = PAT_DAO.executeStatement(GET_GRAPH_PREPARED_SQL_QUERY, null);
+				sqlResult = PAT_DAO.executeStatement(GET_GRAPH_PREPARED_SQL_QUERY, queryArgs);
 			}
 			
 			if (sqlResult.isEmpty()) {
