@@ -2,6 +2,7 @@ package fivium.pat.provider.data;
 
 import java.util.List;
 
+import fivium.pat.datamodel.providers.fitbit.DailyHeart;
 import fivium.pat.datamodel.providers.fitbit.DailySteps;
 import fivium.pat.datamodel.providers.fitbit.Device;
 import fivium.pat.datamodel.providers.fitbit.SleepDetails;
@@ -12,6 +13,7 @@ public class AppDataBackendPortal {
 	private String activityDate;
 	private DailySteps dailyStepData;
 	private SleepDetails dailySleepData;
+	private DailyHeart dailyHeartData;
 	private List<Device> deviceData;
 	private String lastSyncDate;
 
@@ -54,6 +56,10 @@ public class AppDataBackendPortal {
 	public void setDailySleepData(SleepDetails dailySleepData) {
 		this.dailySleepData = dailySleepData;
 	}
+
+	public DailyHeart getDailyHeartData() { return dailyHeartData; };
+
+	public void setDailyHeartData(DailyHeart dailyHeartData) { this.dailyHeartData = dailyHeartData; }
 
 	public List<Device> getDeviceData() {
 		return deviceData;

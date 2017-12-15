@@ -26,7 +26,7 @@
 				<job-name>PollProviders</job-name>
 				<job-group>RNS</job-group>
 				<!-- It will run every 30 seconds -->
-				<!-- <cron-expression>0/30 * * * * ?</cron-expression> -->
+				 <!--<cron-expression>0/30 * * * * ?</cron-expression>-->
 				<cron-expression>0 0 0/1 * * ?</cron-expression>
 				<!-- This will cause it to run every 10 minutes -->
 				<!-- <cron-expression>0 0/10 * 1/1 * ?</cron-expression> -->
