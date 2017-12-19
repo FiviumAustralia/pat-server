@@ -30,8 +30,8 @@ import fivium.pat.utils.PatUtils;
 
 public class GenerateSleepDataQF extends PAT_BaseQF {
 
-  private static final String GENERATE_GRAPH_PREPARED_SQL_QUERY = "SELECT sleepdata.duration, sleepdata.efficiency, patient_details.first_name FROM sleepdata INNER JOIN patient_details ON sleepdata.study_id = patient_details.study_id INNER JOIN patient ON sleepdata.study_id = patient.p_id WHERE date= (SELECT MAX(date) FROM sleepdata) AND patient.Company = ?";
-  private static final String GENERATE_USER_GRAPH_PREPARED_SQL_QUERY= "SELECT sleepdata.duration, sleepdata.efficiency, sleepdata.date, patient_details.first_name FROM sleepdata INNER JOIN patient_details ON sleepdata.study_id = patient_details.study_id INNER JOIN patient ON sleepdata.study_id = patient.p_id  WHERE patient.Company = ? AND sleepdata.study_id = ?";
+  private static final String GENERATE_GRAPH_PREPARED_SQL_QUERY = "SELECT sleepdata.duration, sleepdata.efficiency, sleepdata.start_time, sleepdata.end_time, sleepdata.minutes_asleep, sleepdata.minutes_awake, sleepdata.minutes_restless, patient_details.first_name FROM sleepdata INNER JOIN patient_details ON sleepdata.study_id = patient_details.study_id INNER JOIN patient ON sleepdata.study_id = patient.p_id WHERE date= (SELECT MAX(date) FROM sleepdata) AND patient.Company = ?";
+  private static final String GENERATE_USER_GRAPH_PREPARED_SQL_QUERY= "SELECT sleepdata.duration, sleepdata.efficiency, sleepdata.date, sleepdata.start_time, sleepdata.end_time, sleepdata.minutes_asleep, sleepdata.minutes_awake, sleepdata.minutes_restless, patient_details.first_name FROM sleepdata INNER JOIN patient_details ON sleepdata.study_id = patient_details.study_id INNER JOIN patient ON sleepdata.study_id = patient.p_id  WHERE patient.Company = ? AND sleepdata.study_id = ?";
   private static Log logger = LogFactory.getLog(GenerateSleepDataQF.class);
 
   @Override
