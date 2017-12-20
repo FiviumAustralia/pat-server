@@ -11,6 +11,7 @@ import fivium.pat.graphql.queryfields.clinician.FetchTrialStartDateQF;
 import fivium.pat.graphql.queryfields.clinician.GenerateCSV_QF;
 import fivium.pat.graphql.queryfields.clinician.GetGraphDataQF;
 import fivium.pat.graphql.queryfields.clinician.ListPatientsQF;
+import fivium.pat.graphql.queryfields.clinician.GenerateSleepDataQF;
 import graphql.schema.GraphQLList;
 import graphql.schema.GraphQLObjectType;
 import graphql.schema.GraphQLSchema;
@@ -42,6 +43,8 @@ public class ClinicianActionsSchema {
 	    GenerateCSV_QF generateCSV_QF = new GenerateCSV_QF();
 	    GetGraphDataQF getGraphData = new GetGraphDataQF();
 	    ListPatientsQF listPatientsQF = new ListPatientsQF();
+	    GenerateSleepDataQF sleepData = new GenerateSleepDataQF();
+
 
 		GraphQLObjectType rootObjectType = newObject().name("userQueries")				
 	            .field(newFieldDefinition()
@@ -79,6 +82,12 @@ public class ClinicianActionsSchema {
 	            		.name("GetGraphData")
 	            		.dataFetcher(getGraphData)
 	            		.argument(getGraphData.getArguments()))
+	            .field(newFieldDefinition()
+		                .type(sleepData.getField() )
+		                .name("SleepData")
+		                .dataFetcher(sleepData)
+		                .argument(sleepData.getArguments())
+		            )
 	            .field(newFieldDefinition()
 	                    .type(new GraphQLList(listPatientsQF.getField()))
 	                    .name("ListPatients")
