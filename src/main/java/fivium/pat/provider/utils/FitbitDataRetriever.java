@@ -404,20 +404,20 @@ public class FitbitDataRetriever {
 			if (null != entity.getDailySleepData()) {
 				sqlArgumentsList.add(entity.getpId());
 				sqlArgumentsList.add(entity.getActivityDate());
-				sqlArgumentsList.add(entity.getDailySleepData().getDuration());
+				sqlArgumentsList.add(entity.getDailySleepData().getDuration() / 60); //Minutes
 				sqlArgumentsList.add(entity.getDailySleepData().getEfficiency());
 				sqlArgumentsList.add(entity.getDailySleepData().getStartTime());
 				sqlArgumentsList.add(entity.getDailySleepData().getEndTime());
-				sqlArgumentsList.add(entity.getDailySleepData().getLevels().getSleepSummary().getSleepingTime());
-				sqlArgumentsList.add(entity.getDailySleepData().getLevels().getSleepSummary().getaWakeTime());
-				sqlArgumentsList.add(entity.getDailySleepData().getLevels().getSleepSummary().getRestlessTime());
-				sqlArgumentsList.add(entity.getDailySleepData().getDuration());
+				sqlArgumentsList.add(entity.getDailySleepData().getLevels().getSleepSummary().getSleepingTime().getMinutes());
+				sqlArgumentsList.add(entity.getDailySleepData().getLevels().getSleepSummary().getaWakeTime().getMinutes());
+				sqlArgumentsList.add(entity.getDailySleepData().getLevels().getSleepSummary().getRestlessTime().getMinutes());
+				sqlArgumentsList.add(entity.getDailySleepData().getDuration() / 60); //Minutes
 				sqlArgumentsList.add(entity.getDailySleepData().getEfficiency());
 				sqlArgumentsList.add(entity.getDailySleepData().getStartTime());
 				sqlArgumentsList.add(entity.getDailySleepData().getEndTime());
-				sqlArgumentsList.add(entity.getDailySleepData().getLevels().getSleepSummary().getSleepingTime());
-				sqlArgumentsList.add(entity.getDailySleepData().getLevels().getSleepSummary().getaWakeTime());
-				sqlArgumentsList.add(entity.getDailySleepData().getLevels().getSleepSummary().getRestlessTime());
+				sqlArgumentsList.add(entity.getDailySleepData().getLevels().getSleepSummary().getSleepingTime().getMinutes());
+				sqlArgumentsList.add(entity.getDailySleepData().getLevels().getSleepSummary().getaWakeTime().getMinutes());
+				sqlArgumentsList.add(entity.getDailySleepData().getLevels().getSleepSummary().getRestlessTime().getMinutes());
 				query += Integer.toString(i);
 				dataToBeStoredMap.put(query, sqlArgumentsList);
 				i++;
