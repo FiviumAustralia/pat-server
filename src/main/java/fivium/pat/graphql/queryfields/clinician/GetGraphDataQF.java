@@ -1,3 +1,4 @@
+// Sample GraphQL Query: {"graphQL_Query":"query ($jwt_token: String) {GetGraphData (jwt_token:$jwt_token, study_id: \"42\") {result} }"}
 package fivium.pat.graphql.queryfields.clinician;
 
 import static fivium.pat.utils.Constants.GET_CLINICIAN_COMPANY;
@@ -46,18 +47,17 @@ public class GetGraphDataQF extends PAT_BaseQF {
 	protected Object fetchData(DataFetchingEnvironment environment) {
 
 		Map<String, String> result = new HashMap<String, String>();
-
 		try {
 			String clinician_id = PatUtils.getUserIdFromJWT(environment.getArgument(JWT_GRAPHQL_QUERY_PARAM).toString());
 	    	Collection<Map<String, String>> company_result = PAT_DAO.executeFetchStatement(GET_CLINICIAN_COMPANY, new Object[] { clinician_id });
 	    	String clinician_company = company_result.iterator().next().get("Company");
 			Collection<Map<String, String>> sqlResult;
-			Object[] queryArgs = new Object[] { environment.getArgument("study_id"), clinician_company };
+			Object[] queryArgs = new Object[] {  clinician_company, environment.getArgument("study_id") };
 //  	    If two arguments in the query (in this case, Company and study_id)
 			if (queryArgs.length > 1 && queryArgs[1] != null) {
-				sqlResult = PAT_DAO.executeStatement(GET_USER_GRAPH_PREPARED_SQL_QUERY, queryArgs);
+				sqlResult = PAT_DAO.executeFetchStatement(GET_USER_GRAPH_PREPARED_SQL_QUERY, queryArgs);
 			} else {
-				sqlResult = PAT_DAO.executeStatement(GET_GRAPH_PREPARED_SQL_QUERY, queryArgs);
+				sqlResult = PAT_DAO.executeFetchStatement(GET_GRAPH_PREPARED_SQL_QUERY, queryArgs);
 			}
 			
 			if (sqlResult.isEmpty()) {

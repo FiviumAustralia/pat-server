@@ -1,3 +1,4 @@
+// Sample GraphQL Query: {"graphQL_Query":"query ($jwt_token: String) {SleepData (jwt_token:$jwt_token, study_id: \"42\") {result} }"}
 package fivium.pat.graphql.queryfields.clinician;
 
 import static graphql.Scalars.GraphQLString;
@@ -66,14 +67,14 @@ public class GenerateSleepDataQF extends PAT_BaseQF {
     	  
         
         Object[] queryArgs = new Object[] {
-    				environment.getArgument("study_id"),
-    				clinician_company
+        		clinician_company,
+        		environment.getArgument("study_id")
     			};
 //    	If two arguments in the query (in this case, Company and study_id)
     	 if (queryArgs.length > 1 && queryArgs[1] != null ) {
-    		 sqlResult = PAT_DAO.executeStatement(GENERATE_USER_GRAPH_PREPARED_SQL_QUERY, queryArgs);
+    		 sqlResult = PAT_DAO.executeFetchStatement(GENERATE_USER_GRAPH_PREPARED_SQL_QUERY, queryArgs);
        } else{
-				sqlResult = PAT_DAO.executeStatement(GENERATE_GRAPH_PREPARED_SQL_QUERY, queryArgs);
+				sqlResult = PAT_DAO.executeFetchStatement(GENERATE_GRAPH_PREPARED_SQL_QUERY, queryArgs);
        }
     	 if (!sqlResult.isEmpty()) {
 					String dailySleepData = gson.toJson(sqlResult);
